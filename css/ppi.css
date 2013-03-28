@@ -672,6 +672,7 @@ input.medium_button {
 }
 #rightbar th {
 	border: 1px solid #777;
+	font-weight: normal; 
 }
 
 #sigma-parent {

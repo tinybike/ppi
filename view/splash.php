@@ -4,11 +4,12 @@
 <head>
 <title>Protein interaction networks</title>
 <?php include 'view/headers.php'; ?>
-<!---<link href='css/bootstrap.min.css' rel='stylesheet' type='text/css'>--->
-<!---<link href='css/bootstrap-responsive.min.css' rel='stylesheet' type='text/css'>--->
+<link href='css/bootstrap.min.css' rel='stylesheet' type='text/css'>
+<link href='css/bootstrap-responsive.min.css' rel='stylesheet' type='text/css'>
 <script src="js/jquery.lightbox_me.js"></script>
 <script src="js/sigma.min.js"></script>
 <script src="js/sigma.parseGexf.js"></script>
+<script src="js/sigma.parseJson.js"></script>
 <script>
 $(document).ready(function() {
 
@@ -75,7 +76,8 @@ function init() {
  
 	// Parse a GEXF encoded file to fill the graph
 	// (requires "sigma.parseGexf.js" to be included)
-	sigInst.parseGexf('data/yeast.gexf');
+	sigInst.parseGexf('data/yeast.gexf');//, function() { alert('loaded!'); });
+	//sigInst.parseJson('data/yeast.json', dataReady);
 	 
 	// Bind events :
 	var greyColor = '#666';
@@ -144,7 +146,7 @@ else {
 	</div>--->
 	<div id="rightbar">
 		<table>
-		<tr><th>Datasets</th></tr>
+		<tr><th>datasets</th></tr>
 		<tr><td><span class="hover-item"><a href="http://thebiogrid.org/">BioGRID</a>
 			<span>physical and genetic interactions</span>
 		</span></td></tr>
@@ -178,7 +180,7 @@ else {
 		</table>
 		<br />
 		<table>
-		<tr><th>Tools</th></tr>
+		<tr><th>tools</th></tr>
 		<tr><td><span class="hover-item"><a href="http://www.mathworks.com/matlabcentral/fileexchange/10922">MatlabBGL</a>
 			<span>very fast graphs package for Matlab</span>
 		</span></td></tr>
