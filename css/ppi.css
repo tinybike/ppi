@@ -455,7 +455,7 @@ input.medium_button {
 	min-height: 100%;
 	height: auto !important;
 	height: 100%;
-	margin: 0 auto -20px; /* the bottom margin is the negative value of the footer's height */
+	margin: 0 auto -21px; /* the bottom margin is the negative value of the footer's height */
 }
 
 #footer {
@@ -656,16 +656,19 @@ input.medium_button {
 	width: 15%;
 	float: right;
 	clear: right;
-	padding-right: 7px;
-	padding-top: 7px;
+	padding-right: 10px;
+	padding-top: 0;
 	font-size: 11pt;
 }
 #rightbar table {
 	width: 100%;
-	line-height: 15px;
+	line-height: 18px;
 }
 #rightbar td {
 	text-align: left;
+}
+#rightbar td:hover {
+	background-color: #f5f5f5;
 }
 #rightbar th {
 	border: 1px solid #777;

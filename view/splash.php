@@ -75,7 +75,7 @@ function init() {
  
 	// Parse a GEXF encoded file to fill the graph
 	// (requires "sigma.parseGexf.js" to be included)
-	sigInst.parseGexf('data/LesMiserables.gexf');
+	sigInst.parseGexf('data/yeast.gexf');
 	 
 	// Bind events :
 	var greyColor = '#666';
@@ -136,11 +136,12 @@ else {
 <body>
 <div class="wrapper">
 	<?php create_navbar(); ?>
-  <div class="span12 sigma-parent" id="sigma-example-parent">
-    <div class="sigma-expand" id="sigma-example"></div>
-  </div>
-  	<div id="textwall">
+	<br />
+	<div class="span12 sigma-parent" id="sigma-example-parent">
+		<div class="sigma-expand" id="sigma-example"></div>
 	</div>
+  	<!---<div id="textwall">
+	</div>--->
 	<div id="rightbar">
 		<table>
 		<tr><th>Datasets</th></tr>
@@ -175,6 +176,7 @@ else {
 			<span>Arabidopsis protein-protein interaction data curated from the literature</span>
 		</span></td></tr>
 		</table>
+		<br />
 		<table>
 		<tr><th>Tools</th></tr>
 		<tr><td><span class="hover-item"><a href="http://www.mathworks.com/matlabcentral/fileexchange/10922">MatlabBGL</a>

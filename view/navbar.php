@@ -15,7 +15,7 @@ function create_navbar() {
 					<a id="how-trigger" href="#">reference</a>
 					<div id="how-content">
 						<small>
-						G.J. Peterson, S. Press<span style="font-family:Times New Roman,serif;font-size:11pt">é</span>, K.S. Peterson, and K.A. Dill. <a href="http://www.plosone.org/article/info%3Adoi%2F10.1371%2Fjournal.pone.0039052">Simulated evolution of protein-protein interaction networks with realistic topology</a>. <i>PLoS ONE</i> 7(6): e39052, 2012.
+						J. Peterson, S. Presse, K. Peterson, and K. Dill. <a href="http://www.plosone.org/article/info%3Adoi%2F10.1371%2Fjournal.pone.0039052">Simulated evolution of protein-protein interaction networks with realistic topology</a>. <i>PLoS ONE</i> 7(6): e39052, 2012.
 						</small>
 					</div>
 					</td>
