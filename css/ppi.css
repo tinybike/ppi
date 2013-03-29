@@ -532,28 +532,15 @@ input.medium_button {
 #sign_up {
 	font: 15px/20px "Helvetica Neue", Helvetica, Arial, sans-serif;
 	padding: 14px 22px;
-	width: 75%;
+	width: 50%;
 	position: relative;
 	display: none;
 	color: #000;
-	background-color: #f5f5f5;
-	background-image: linear-gradient(bottom, #DDDEDB 16%, #F5F5F5 58%);
-    background-image: -o-linear-gradient(bottom, #DDDEDB 16%, #F5F5F5 58%);
-    background-image: -moz-linear-gradient(bottom, #DDDEDB 16%, #F5F5F5 58%);
-    background-image: -webkit-linear-gradient(bottom, #DDDEDB 16%, #F5F5F5 58%);
-    background-image: -ms-linear-gradient(bottom, #DDDEDB 16%, #F5F5F5 58%);
-    background-image: -webkit-gradient(
-	linear,
-	left bottom,
-	left top,
-	color-stop(0.16, #DDDEDB),
-	color-stop(0.58, #F5F5F5)
-    );
+	background-color: #fff;
+	border-radius: 10px;
+	border: 1px solid #777;
 }
 
-#sign_up a {
-	color: #000;
-}
 #sign_up #sign_up_form {
 	margin-top: 13px;
 }
@@ -640,15 +627,32 @@ input.medium_button {
 
 /* Leftbar */
 #leftbar {
-	width: 20%;
+	/*width: 20%;
 	float: left;
 	clear: left;
-	padding-left: 7px;
-	padding-top: 7px;
+	padding-left: 20px;
+	padding-top: 7px;*/
+	left: 20px;
+	top: 50px;
 	font-size: 10pt;
+	position: absolute;
 }
 #leftbar table {
 	line-height: 15px;
+	background-color: #fff;
+}
+#leftbar td {
+	padding-left: 16px;
+	padding-right: 16px;
+	padding-top: 4px;
+	padding-bottom: 4px;
+	border: 1px solid #777;
+}
+#leftbar td:hover {
+	background-color: #ffcccc;
+}
+#leftbar a {
+	color: #000;
 }
 
 /* Rightbar */
@@ -678,11 +682,12 @@ input.medium_button {
 #sigma-parent {
 	width: 100%;
 	height: 250px;
+	padding-left: 200px;
 	position: relative;
 	float: left;
 }
 #sigma-example {
 	position: absolute;
 	width: 80%;
-	height: 80%;
+	height: 85%;
 }

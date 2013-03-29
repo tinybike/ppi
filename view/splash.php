@@ -45,42 +45,32 @@ $(document).ready(function() {
 			});
 		e.preventDefault();
 	});
-
-	// Search query
-	$('#finder').submit(function() {
-		$.post('index.php?page=network', $(this).serialize(), function(response) {
-			$('#links').html(response);
-		});
-		return false;
-	});
-
 });
 
 function init() {
-	// Instanciate sigma.js and customize rendering :
+	// Instantiate sigma.js and customize rendering
 	var sigInst = sigma.init(document.getElementById('sigma-example')).drawingProperties({
 		defaultLabelColor: '#fff',
 		defaultLabelSize: 14,
 		defaultLabelBGColor: '#fff',
 		defaultLabelHoverColor: '#000',
-		labelThreshold: 6,
+		labelThreshold: 11,
 		defaultEdgeType: 'curve'
 	}).graphProperties({
 		minNodeSize: 0.5,
-		maxNodeSize: 5,
+		maxNodeSize: 4,
 		minEdgeSize: 1,
 		maxEdgeSize: 1
 	}).mouseProperties({
 		maxRatio: 4
 	});
  
-	// Parse a GEXF encoded file to fill the graph
-	// (requires "sigma.parseGexf.js" to be included)
-	sigInst.parseGexf('data/yeast.gexf');//, function() { alert('loaded!'); });
-	//sigInst.parseJson('data/yeast.json', dataReady);
+	// Parse a JSON encoded file to fill the graph
+	var organism = '<?php echo $org; ?>';
+	sigInst.parseJson('data/' + organism + '_ss.json', function() { sigInst.draw(); });
 	 
-	// Bind events :
-	var greyColor = '#666';
+	// Bind events
+	var greyColor = '#ccc';
 	sigInst.bind('overnodes',function(event){
 		var nodes = event.content;
 		var neighbors = {};
@@ -121,8 +111,8 @@ function init() {
 			n.attr['grey'] = 0;
 		}).draw(2,2,2);
 	});
-	 
-	// Draw the graph :
+	
+	// Draw the graph
 	sigInst.draw();
 }
 
@@ -142,75 +132,90 @@ else {
 	<div class="span12 sigma-parent" id="sigma-example-parent">
 		<div class="sigma-expand" id="sigma-example"></div>
 	</div>
-  	<!---<div id="textwall">
-	</div>--->
+	<div id="leftbar">
+	<table>
+		<tr>
+		<td><a href="index.php?ppi=sce">yeast</a></td>
+		<td><a href="index.php?ppi=dme">fruit fly</a></td>
+		<td><a href="index.php?ppi=hsa">human</a></td>
+		</tr>
+		<tr>
+		<td><a href="index.php?ppi=ath">arabidopsis</a></td>
+		<td><a href="index.php?ppi=cel">worm</a></td>
+		<td><a href="index.php?ppi=mmu">mouse</a></td>
+		</tr>
+	</table>
+	</div>
 	<div id="rightbar">
 		<table>
-		<tr><th>datasets</th></tr>
-		<tr><td><span class="hover-item"><a href="http://thebiogrid.org/">BioGRID</a>
-			<span>physical and genetic interactions</span>
-		</span></td></tr>
-		<tr><td><span class="hover-item"><a href="http://hintdb.hgc.jp/htp/index.html">HitPredict</a>
-			<span>small-scale 'high-confidence' data, and predicted interactions based on Bayesian inference</span>
-		</span></td></tr>
-		<tr><td><span class="hover-item"><a href="http://string-db.org/">STRING</a>
-			<span>database of known and predicted protein interactions, includes direct (physical) and indirect (functional) associations</span>
-		</span></td></tr>
-		<tr><td><span class="hover-item"><a href="https://interfly.med.harvard.edu/">DPiM</a>
-			<span>protein interaction map of the Drosophila melanogaster proteome</span>
-		</span></td></tr>
-		<tr><td><span class="hover-item"><a href="http://www.ebi.ac.uk/intact/">IntAct</a>
-			<span>open source database system and analysis tools for molecular interaction data</span>
-		</span></td></tr>
-		<tr><td><span class="hover-item"><a href="http://mint.bio.uniroma2.it/mint/Welcome.do">MINT</a>
-			<span>protein-protein interactions mined from the scientific literature by expert curators</span>
-		</span></td></tr>
-		<tr><td><span class="hover-item"><a href="http://dip.doe-mbi.ucla.edu/dip/Main.cgi">DIP</a>
-			<span>experimentally determined interactions between proteins, combining information from a variety of sources</span>
-		</span></td></tr>
-		<tr><td><span class="hover-item"><a href="http://www.hprd.org/">HPRD</a>
-			<span>human protein reference database</span>
-		</span></td></tr>
-		<tr><td><span class="hover-item"><a href="http://mips.helmholtz-muenchen.de/proj/ppi/">MIPS</a>
-			<span>collection of manually curated high-quality PPI data collected from the scientific literature by expert curators</span>
-		</span></td></tr>
-		<tr><td><span class="hover-item"><a href="http://www.arabidopsis.org/portals/proteome/proteinInteract.jsp">TAIR</a>
-			<span>Arabidopsis protein-protein interaction data curated from the literature</span>
-		</span></td></tr>
+			<tr><th>datasets</th></tr>
+			<tr><td><span class="hover-item"><a href="http://thebiogrid.org/">BioGRID</a>
+				<span>physical and genetic interactions</span>
+			</span></td></tr>
+			<tr><td><span class="hover-item"><a href="http://hintdb.hgc.jp/htp/index.html">HitPredict</a>
+				<span>small-scale 'high-confidence' data, and predicted interactions based on Bayesian inference</span>
+			</span></td></tr>
+			<tr><td><span class="hover-item"><a href="http://string-db.org/">STRING</a>
+				<span>database of known and predicted protein interactions, includes direct (physical) and indirect (functional) associations</span>
+			</span></td></tr>
+			<tr><td><span class="hover-item"><a href="https://interfly.med.harvard.edu/">DPiM</a>
+				<span>protein interaction map of the Drosophila melanogaster proteome</span>
+			</span></td></tr>
+			<tr><td><span class="hover-item"><a href="http://www.ebi.ac.uk/intact/">IntAct</a>
+				<span>open source database system and analysis tools for molecular interaction data</span>
+			</span></td></tr>
+			<tr><td><span class="hover-item"><a href="http://mint.bio.uniroma2.it/mint/Welcome.do">MINT</a>
+				<span>protein-protein interactions mined from the scientific literature by expert curators</span>
+			</span></td></tr>
+			<tr><td><span class="hover-item"><a href="http://dip.doe-mbi.ucla.edu/dip/Main.cgi">DIP</a>
+				<span>experimentally determined interactions between proteins, combining information from a variety of sources</span>
+			</span></td></tr>
+			<tr><td><span class="hover-item"><a href="http://www.hprd.org/">HPRD</a>
+				<span>human protein reference database</span>
+			</span></td></tr>
+			<tr><td><span class="hover-item"><a href="http://mips.helmholtz-muenchen.de/proj/ppi/">MIPS</a>
+				<span>collection of manually curated high-quality PPI data collected from the scientific literature by expert curators</span>
+			</span></td></tr>
+			<tr><td><span class="hover-item"><a href="http://www.arabidopsis.org/portals/proteome/proteinInteract.jsp">TAIR</a>
+				<span>Arabidopsis protein-protein interaction data curated from the literature</span>
+			</span></td></tr>
 		</table>
 		<br />
 		<table>
-		<tr><th>tools</th></tr>
-		<tr><td><span class="hover-item"><a href="http://www.mathworks.com/matlabcentral/fileexchange/10922">MatlabBGL</a>
-			<span>very fast graphs package for Matlab</span>
-		</span></td></tr>
-		<tr><td><span class="hover-item"><a href="https://sites.google.com/a/brain-connectivity-toolbox.net/bct/Home">Brain Connectivity Toolbox</a>
-			<span>Matlab scripts to calculate most standard graph-theoretic quantities</span>
-		</span></td></tr>
-		<tr><td><span class="hover-item"><a href="http://www.cmth.bnl.gov/%7Emaslov/matlab.htm">Sergei Maslov's website</a>
-			<span>Matlab scripts for degree-preserving network rewiring and degree-degree correlation maps</span>
-		</span></td></tr>
-		<tr><td><span class="hover-item"><a href="https://sites.google.com/a/brain-connectivity-toolbox.net/bct/Home/functions/modularity_louvain_und.m?attredirects=0">modularity calculator</a>
-			<span>Matlab implementation of the Louvain algorithm to calculate network modularity</span>
-		</span></td></tr>
-		<tr><td><span class="hover-item"><a href="http://cbg.garvan.unsw.edu.au/pina/">PINA</a>
-			<span>integrated platform for protein interaction network construction, filtering, analysis, visualization and management</span>
-		</span></td></tr>
-		<tr><td><span class="hover-item"><a href="http://cytoscape.org">Cytoscape</a>
-			<span>open source software platform for visualizing complex networks and integrating these with any type of attribute data</span>
-		</span></td></tr>
-		<tr><td><span class="hover-item"><a href="http://mips.helmholtz-muenchen.de/genre/proj/mpact">MPact</a>
-			<span>common access point to interaction resources at MIPS</span>
-		</span></td></tr>
-		<tr><td><span class="hover-item"><a href="http://snap.stanford.edu/snap/index.html">SNAP</a>
-			<span>general purpose, high performance system for analysis and manipulation of large networks</span>
-		</span></td></tr>
-		<tr><td><span class="hover-item"><a href="http://snap.stanford.edu/snap/index.html">APID</a>
-			<span>Agile Protein Interaction DataAnalyzer: interactive bioinformatic web-tool that has been developed to allow exploration and analysis of main currently known information about protein-protein interactions integrated and unified in a common and comparative platform</span>
-		</span></td></tr>
-		<tr><td><span class="hover-item"><a href="http://sigmajs.org/">sigma.js</a>
-			<span>open-source lightweight JavaScript library to draw graphs</span>
-		</span></td></tr>
+			<tr><th>tools</th></tr>
+			<tr><td><span class="hover-item"><a href="http://www.mathworks.com/matlabcentral/fileexchange/10922">MatlabBGL</a>
+				<span>very fast graphs package for Matlab</span>
+			</span></td></tr>
+			<tr><td><span class="hover-item"><a href="https://sites.google.com/a/brain-connectivity-toolbox.net/bct/Home">Brain Connectivity Toolbox</a>
+				<span>Matlab scripts to calculate most standard graph-theoretic quantities</span>
+			</span></td></tr>
+			<tr><td><span class="hover-item"><a href="http://www.cmth.bnl.gov/%7Emaslov/matlab.htm">Sergei Maslov's website</a>
+				<span>Matlab scripts for degree-preserving network rewiring and degree-degree correlation maps</span>
+			</span></td></tr>
+			<tr><td><span class="hover-item"><a href="https://sites.google.com/a/brain-connectivity-toolbox.net/bct/Home/functions/modularity_louvain_und.m?attredirects=0">modularity calculator</a>
+				<span>Matlab implementation of the Louvain algorithm to calculate network modularity</span>
+			</span></td></tr>
+			<tr><td><span class="hover-item"><a href="http://cbg.garvan.unsw.edu.au/pina/">PINA</a>
+				<span>integrated platform for protein interaction network construction, filtering, analysis, visualization and management</span>
+			</span></td></tr>
+			<tr><td><span class="hover-item"><a href="http://cytoscape.org">Cytoscape</a>
+				<span>open source software platform for visualizing complex networks and integrating these with any type of attribute data</span>
+			</span></td></tr>
+			<tr><td><span class="hover-item"><a href="http://mips.helmholtz-muenchen.de/genre/proj/mpact">MPact</a>
+				<span>common access point to interaction resources at MIPS</span>
+			</span></td></tr>
+			<tr><td><span class="hover-item"><a href="http://snap.stanford.edu/snap/index.html">SNAP</a>
+				<span>general purpose, high performance system for analysis and manipulation of large networks</span>
+			</span></td></tr>
+			<tr><td><span class="hover-item"><a href="http://snap.stanford.edu/snap/index.html">APID</a>
+				<span>Agile Protein Interaction DataAnalyzer: interactive bioinformatic web-tool that has been developed to allow exploration and analysis of main currently known information about protein-protein interactions integrated and unified in a common and comparative platform</span>
+			</span></td></tr>
+			<tr><td><span class="hover-item"><a href="http://sigmajs.org/">sigma.js</a>
+				<span>open-source lightweight JavaScript library to draw graphs</span>
+			</span></td></tr>
+			<tr><td><span class="hover-item"><a href="https://gephi.org/">Gephi</a>
+				<span>interactive visualization and exploration platform for all kinds of networks and complex systems, dynamic and hierarchical graphs</span>
+			</span></td></tr>
 		</table>
 	</div>
 	<div class="push"></div>
@@ -221,36 +226,9 @@ else {
 <div id="sign_up">
 	<h3 id="see_id">About this site</h3>
 	<div id="sign_up_form">
-		<p>This website is a companion to our paper on eukaryotic protein-protein interaction (PPI) network evolution, written by Jack Peterson (me), Steve Press<span style="font-family:Times New Roman,serif;font-size:11pt">é</span>, Kristin Peterson, and Ken Dill.  This site will be a repository for all our PPI-related scripts.  Currently uploaded here are the Matlab scripts we used to simulate the PPI networks described in our paper.</p>
-		<br/>
-		<p>Our scripts are available on <a href="https://github.com/tensorjack/DUNE">GitHub</a>.&nbsp; In addition, you will need to install the <a href="http://www.mathworks.com/matlabcentral/fileexchange/10922">MatlabBGL package</a> and the <a href="https://sites.google.com/a/brain-connectivity-toolbox.net/bct/Home/functions/modularity_louvain_und.m?attredirects=0">Louvain modularity script</a>.&nbsp; A brief description of our scripts is below.</p>
-		<br/>
-		<p>ppi.m is an implementation of the DUNE (DUplication &amp; NEofunctionalization) model of eukaryotic PPI network evolution<br>
-		ppi_import.m (data import, requires adjacency matrix as input file)<br/>
-		pointmutation.m (neofunctionalization/assimilation events)<br/>
-		timedepstats.m (updates dynamical properties at specified intervals)<br/>
-		trackstats.m (updates degree and betweenness "tracking" values)<br/>
-		&nbsp;<br/>
-		Also included are several files used to calculate various statistics and plot several static and dynamic quantities obtained from the simulation.&nbsp; These files are <i>not </i>required to run ppi.m.<br/>
-		</p>
-		<p>std_dyn.m (calculates dynamical statistics)<br/>
-		std_stat.m (calculates static end-state statistics)<br/>
-		std_tracking.m (calculates degree and betweenness "tracking" statistics)<br/>
-		ppi_dyn.m (prepares dynamical quantities for plotting)<br/>
-		RT_save_figures_bvk.m (betweenness vs degree)<br/>
-		RT_save_figures_nvk.m (nearest-neighbor degree vs degree)<br/>
-		RT_save_figures_Cvk.m (clustering coefficients vs degree)<br/>
-		RT_save_figures_E2.m (second-largest eigenvalue evolution)<br/>
-		RT_save_figures_px.m (closeness distribution)<br/>
-		RT_save_figures_plambda.m (walk matrix eigenvalue distribution)<br/>
-		RT_save_figures_pb.m (betweenness distribution)<br/>
-		RT_save_figures_pk.m (degree distribution)<br/>
-		RT_save_figures_gcc.m (global clustering coefficient evolution)<br/>
-		RT_save_figures_Q.m (modularity coefficient evolution)<br/>
-		RT_save_figures_d.m (diameter evolution)<br/>
-		RT_save_figures_f1.m (largest component evolution)<br/>
-		&nbsp;<br/>
-		</p>
+		<p>The <a href="http://dillgroup.org">Dill research group</a>, at Stony Brook University, has recently begun a computational study of eukaryotic protein-protein interaction (PPI) network evolution.  We published our basic model layout in <i>PLoS ONE</i>, in 2012:</p>
+		<p>J. Peterson, S. Presse, K. Peterson, and K. Dill. <a href="http://www.plosone.org/article/info%3Adoi%2F10.1371%2Fjournal.pone.0039052">Simulated evolution of protein-protein interaction networks with realistic topology</a>. <i>PLoS ONE</i> 7(6): e39052, 2012.</p>
+		<p>The Matlab scripts we used are available on <a href="https://github.com/tensorjack/DUNE">GitHub</a>.  (In addition, you will need to install the <a href="http://www.mathworks.com/matlabcentral/fileexchange/10922">MatlabBGL package</a> and the <a href="https://sites.google.com/a/brain-connectivity-toolbox.net/bct/Home/functions/modularity_louvain_und.m?attredirects=0">Louvain modularity script</a>.)  In our model, protein networks evolve by two known biological mechanisms: (1) a gene can duplicate, putting one copy under new selective pressures that allow it to establish new relationships to other proteins in the cell, and (2) a protein undergoes a mutation that causes it to develop new binding or new functional relationships with existing proteins. In addition, we allow for the possibility that once a mutated protein develops a new relationship with another protein (called the target), the mutant protein can also more readily establish relationships with other proteins in the target’s neighborhood.</p>
 	</div>
 </div>
 <!--- end lightbox --->

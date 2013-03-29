@@ -1,21 +1,15 @@
 <?php
-include_once('model/Model.php');
+//include_once('model/Model.php');
 
 class Controller {
-	private $model;
-	private $page;
+	private $organism;
 	
 	public function __construct() {
-		$this->model = new Model();
-		$this->page = (isset($_GET['page'])) ? $_GET['page'] : 'default';
+		$this->organism = (isset($_GET['ppi'])) ? $_GET['ppi'] : 'sce';
 	}
 	
 	public function invoke() {
-		switch ($this->page) {
-			// By default, show the splash screen
-			default:
-				include 'view/splash.php';
-				break;
-		}
+		$org = $this->organism;
+		include 'view/splash.php';
 	}
 }
