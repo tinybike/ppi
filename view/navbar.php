@@ -20,7 +20,7 @@ function create_navbar() {
 					</div>
 					</td>
 					<td>
-					<a href="https://github.com/tensorjack/DUNE">downloads</a>
+					<a href="https://github.com/tensorjack/DUNE">source</a>
 					</td>
 					</div>
 				</tr>
