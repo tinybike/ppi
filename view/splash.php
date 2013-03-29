@@ -135,14 +135,36 @@ else {
 	<div id="leftbar">
 	<table>
 		<tr>
-		<td><a href="index.php?ppi=sce">yeast</a></td>
-		<td><a href="index.php?ppi=dme">fruit fly</a></td>
-		<td><a href="index.php?ppi=hsa">human</a></td>
+		<td id="sce"><a href="index.php?ppi=sce">budding yeast</a></td>
+		<td id="dme"><a href="index.php?ppi=dme">fruit fly</a></td>
+		<td id="hsa"><a href="index.php?ppi=hsa">human</a></td>
 		</tr>
 		<tr>
-		<td><a href="index.php?ppi=ath">arabidopsis</a></td>
-		<td><a href="index.php?ppi=cel">worm</a></td>
-		<td><a href="index.php?ppi=mmu">mouse</a></td>
+		<td id="spo"><a href="index.php?ppi=spo">fission yeast</a></td>
+		<td id="rno"><a href="index.php?ppi=rno">rat</a></td>
+		<td id="mmu"><a href="index.php?ppi=mmu">mouse</a></td>
+		</tr>
+		<tr>
+		<td id="ath"><a href="index.php?ppi=ath">arabidopsis</a></td>
+		<td id="cel"><a href="index.php?ppi=cel">worm</a></td>
+		<td id="eco"><a href="index.php?ppi=eco">E. coli</a></td>
+		</tr>
+	</table>
+	</div>
+	<script>
+	$('#<?php echo $org; ?>').css('background-color', '#ffcccc');
+	</script>
+	<div id="summary">
+	<table>
+		<tr><th><a href="<?php echo $summary['url']; ?>"><?php echo $summary['common']; ?> <i>(<?php echo $summary['name']; ?>)</a></i></th></tr>
+		<tr><td>proteins: <?php echo $summary['nodes']; ?></td></tr>
+		<tr><td>interactions: <?php echo $summary['edges']; ?></td></tr>
+		<tr><td>average degree: <?php echo $summary['average_k']; ?></td></tr>
+		<tr><td>clustering coefficient: <?php echo $summary['clustering']; ?></td></tr>
+		<tr><td>modularity: <?php echo $summary['modularity']; ?></td></tr>
+		<tr><td>components: <?php echo $summary['component']; ?></td></tr>
+		<tr><td>diameter: <?php echo $summary['diameter']; ?></td></tr>
+		<tr><td>average path length: <?php echo $summary['average_l']; ?></td></tr>
 		</tr>
 	</table>
 	</div>
@@ -226,7 +248,7 @@ else {
 <div id="sign_up">
 	<h3 id="see_id">About this site</h3>
 	<div id="sign_up_form">
-		<p>The <a href="http://dillgroup.org">Dill research group</a>, at Stony Brook University, has recently begun a computational study of eukaryotic protein-protein interaction (PPI) network evolution.  We published our basic model layout in <i>PLoS ONE</i>, in 2012:</p>
+		<p>The <a href="http://dillgroup.org">Dill research group</a>, at <a href="http://www.stonybrook.edu">Stony Brook University's</a> <a href="http://www.laufercenter.org">Laufer Center</a>, has recently begun a computational study of eukaryotic protein-protein interaction (PPI) network evolution.  We published our basic model layout in <i>PLoS ONE</i>, in 2012:</p>
 		<p>J. Peterson, S. Presse, K. Peterson, and K. Dill. <a href="http://www.plosone.org/article/info%3Adoi%2F10.1371%2Fjournal.pone.0039052">Simulated evolution of protein-protein interaction networks with realistic topology</a>. <i>PLoS ONE</i> 7(6): e39052, 2012.</p>
 		<p>The Matlab scripts we used are available on <a href="https://github.com/tensorjack/DUNE">GitHub</a>.  (In addition, you will need to install the <a href="http://www.mathworks.com/matlabcentral/fileexchange/10922">MatlabBGL package</a> and the <a href="https://sites.google.com/a/brain-connectivity-toolbox.net/bct/Home/functions/modularity_louvain_und.m?attredirects=0">Louvain modularity script</a>.)  In our model, protein networks evolve by two known biological mechanisms: (1) a gene can duplicate, putting one copy under new selective pressures that allow it to establish new relationships to other proteins in the cell, and (2) a protein undergoes a mutation that causes it to develop new binding or new functional relationships with existing proteins. In addition, we allow for the possibility that once a mutated protein develops a new relationship with another protein (called the target), the mutant protein can also more readily establish relationships with other proteins in the target’s neighborhood.</p>
 	</div>
