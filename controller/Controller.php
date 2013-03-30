@@ -10,7 +10,8 @@ class Controller {
 	
 	public function invoke() {
 		$org = (isset($_GET['ppi'])) ? $_GET['ppi'] : 'sce';
-		$summary = $this->model->get_summary($org);
+		$dataset = (isset($_GET['d'])) ? $_GET['d'] : 'ss';
+		$summary = $this->model->get_summary($org, $dataset);
 		include 'view/splash.php';
 	}
 }

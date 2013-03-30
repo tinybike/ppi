@@ -695,7 +695,7 @@ input.medium_button {
 /* Leftbar-summary */
 #summary {
 	left: 15px;
-	top: 145px;
+	top: 195px;
 	font-size: 11pt;
 	position: absolute;
 }
@@ -723,10 +723,35 @@ input.medium_button {
 	color: #000;
 }
 
+/* Datapicker */
+#datapicker {
+	left: 30px;
+	top: 145px;
+	font-size: 10pt;
+	position: absolute;
+}
+#datapicker table {
+	line-height: 19px;
+	background-color: #fff;
+}
+#datapicker td {
+	padding-left: 16px;
+	padding-right: 16px;
+	padding-top: 4px;
+	padding-bottom: 5px;
+	border: 1px solid #777;
+}
+#datapicker td:hover {
+	background-color: #ffcccc;
+}
+#datapicker a {
+	color: #000;
+}
+
 /* Intro text for new users */
 #intro {
 	left: 15px;
-	top: 145px;
+	top: 175px;
 	width: 350px;
 	font-size: 11pt;
 	position: absolute;

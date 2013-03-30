@@ -16,11 +16,9 @@ class Model {
 		return $base_link;
 	}
 	
-	public function get_summary($org) {
-		// Summary: name, #nodes, #edges, average degree, global clustering 
-		// coefficient, modularity, largest component size
+	public function get_summary($org, $dataset) {
 		$summary = array(
-			'sce' => array(
+			'sce_ss' => array(
 				'url' => 'http://hintdb.hgc.jp/htp/download/S_cerevisiae_ss.tar.gz',
 				'common' => 'budding yeast',
 				'name' => 'S. cerevisiae', 
@@ -46,7 +44,7 @@ class Model {
 				'diameter' => 9,
 				'average_l' => 3.255
 			),
-			'dme' => array(
+			'dme_ss' => array(
 				'url' => 'http://hintdb.hgc.jp/htp/download/D_melanogaster_ss.tar.gz',
 				'common' => 'fruit fly',
 				'name' => 'D. melanogaster', 
@@ -72,7 +70,7 @@ class Model {
 				'diameter' => 13,
 				'average_l' => 5.00
 			),
-			'hsa' => array(
+			'hsa_ss' => array(
 				'url' => 'http://hintdb.hgc.jp/htp/download/H_sapiens_ss.tar.gz',
 				'common' => 'human',
 				'name' => 'H. sapiens', 
@@ -98,7 +96,7 @@ class Model {
 				'diameter' => 10,
 				'average_l' => 2.87
 			),			
-			'cel' => array(
+			'cel_ss' => array(
 				'url' => 'http://hintdb.hgc.jp/htp/download/C_elegans_ss.tar.gz',
 				'common' => 'worm',
 				'name' => 'C. elegans', 
@@ -124,7 +122,7 @@ class Model {
 				'diameter' => 15,
 				'average_l' => 5.10
 			),
-			'mmu' => array(
+			'mmu_ss' => array(
 				'url' => 'http://hintdb.hgc.jp/htp/download/M_musculus_ss.tar.gz',
 				'common' => 'mouse',
 				'name' => 'M. musculus', 
@@ -150,7 +148,7 @@ class Model {
 				'diameter' => 17,
 				'average_l' => 5.04
 			),
-			'rno' => array(
+			'rno_ss' => array(
 				'url' => 'http://hintdb.hgc.jp/htp/download/R_norvegicus_ss.tar.gz',
 				'common' => 'rat',
 				'name' => 'R. norvegicus', 
@@ -176,7 +174,7 @@ class Model {
 				'diameter' => 13,
 				'average_l' => 3.97
 			),
-			'spo' => array(
+			'spo_ss' => array(
 				'url' => 'http://hintdb.hgc.jp/htp/download/S_pombe_ss.tar.gz',
 				'common' => 'fission yeast',
 				'name' => 'S. pombe', 
@@ -202,7 +200,7 @@ class Model {
 				'diameter' => 18,
 				'average_l' => 6.5
 			),
-			'eco' => array(
+			'eco_ss' => array(
 				'url' => 'http://hintdb.hgc.jp/htp/download/E_coli_ss.tar.gz',
 				'common' => 'E. coli',
 				'name' => 'E. coli', 
@@ -228,7 +226,7 @@ class Model {
 				'diameter' => 11,
 				'average_l' => 3.64
 			),
-			'ath' => array(
+			'ath_ss' => array(
 				'url' => 'http://hintdb.hgc.jp/htp/download/A_thaliana_ss.tar.gz',
 				'common' => 'arabidopsis',
 				'name' => 'A. thaliana', 
@@ -255,7 +253,7 @@ class Model {
 				'average_l' => 5.22
 			)
 		);
-		return $summary[$org];
+		return $summary[$org . '_' . $dataset];
 	}
 
 }
