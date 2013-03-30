@@ -723,3 +723,15 @@ input.medium_button {
 	color: #000;
 }
 
+/* Intro text for new users */
+#intro {
+	left: 15px;
+	top: 145px;
+	width: 350px;
+	font-size: 11pt;
+	position: absolute;
+	border: 1px solid #777;
+	border-radius: 10px;
+	padding: 10px;
+	background-color: #fff;
+}

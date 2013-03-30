@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Protein interaction networks</title>
+<title>interacto.me: protein interaction network visualization and modeling</title>
 <?php include 'view/headers.php'; ?>
 <link href='css/bootstrap.min.css' rel='stylesheet' type='text/css'>
 <link href='css/bootstrap-responsive.min.css' rel='stylesheet' type='text/css'>
@@ -12,7 +12,7 @@
 <script>
 $(document).ready(function() {
 
-	// Drop-down boxes
+	// Drop-down box
 	$('#how-trigger').click(function() {
 		$(this).next('#how-content').toggle();
 		$(this).toggleClass('active');							
@@ -112,6 +112,16 @@ else {
 	window.onload = init;
 }
 </script>
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-39726053-1']);
+  _gaq.push(['_trackPageview']);
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
 </head>
 
 <body>
@@ -143,20 +153,39 @@ else {
 	<script>
 	$('#<?php echo $org; ?>').css('background-color', '#ffcccc');
 	</script>
-	<div id="summary">
-	<table>
-		<tr><th><a href="<?php echo $summary['url']; ?>"><?php echo $summary['common']; ?> <i>(<?php echo $summary['name']; ?>)</a></i></th></tr>
-		<tr><td>proteins: <?php echo $summary['nodes']; ?></td></tr>
-		<tr><td>interactions: <?php echo $summary['edges']; ?></td></tr>
-		<tr><td>average degree: <?php echo $summary['average_k']; ?></td></tr>
-		<tr><td>clustering coefficient: <?php echo $summary['clustering']; ?></td></tr>
-		<tr><td>modularity: <?php echo $summary['modularity']; ?></td></tr>
-		<tr><td>components: <?php echo $summary['component']; ?></td></tr>
-		<tr><td>diameter: <?php echo $summary['diameter']; ?></td></tr>
-		<tr><td>average path length: <?php echo $summary['average_l']; ?></td></tr>
-		</tr>
-	</table>
-	</div>
+	<?php
+	if (isset($_GET['ppi'])) {
+		echo "
+		<div id='summary'>
+			<table>
+				<tr><th><a href='" . $summary['url'] . "'>" . $summary['common'] . " <i>(" . $summary['name'] . ")</a></i></th></tr>
+				<tr><td>proteins: " . $summary['nodes'] . "</td></tr>
+				<tr><td>interactions: " . $summary['edges'] . "</td></tr>
+				<tr><td>average degree: " . $summary['average_k'] . "</td></tr>
+				<tr><td>clustering coefficient: " . $summary['clustering'] . "</td></tr>
+				<tr><td>modularity: " . $summary['modularity'] . "</td></tr>
+				<tr><td>components: " . $summary['component'] . "</td></tr>
+				<tr><td>diameter: " . $summary['diameter'] . "</td></tr>
+				<tr><td>average path length: " . $summary['average_l'] . "</td></tr>
+				</tr>
+			</table>
+		</div>
+		";
+	}
+	else {
+		echo "
+		<div id='intro'>
+			<p>Welcome to <a href='http://interacto.me'>interacto.me</a>, an interactive visualization tool for protein interaction networks!</p>
+			
+			<p>To change the organism you're viewing, just click on one of the names in the grid above.</p>
+
+			<p>Click on the 'about' button in the upper left hand corner of the site to learn more about the science behind <a href='http://interacto.me'>interacto.me</a>.</p>
+			
+			<p>The visualizations shown here are generated using <a href='http://sigmajs.org'>sigma.js</a>, with the underlying graph files created by <a href='https://gephi.org'>Gephi</a>.  The data used here are the small-scale and 'hi-confidence' datasets from <a href='http://hintdb.hgc.jp/htp/index.html'>HitPredict</a>.</p>
+		</div>
+		";
+	}
+	?>
 	<div id="rightbar">
 		<table>
 			<tr><th>datasets</th></tr>
