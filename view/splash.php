@@ -8,22 +8,11 @@
 <link href='css/bootstrap-responsive.min.css' rel='stylesheet' type='text/css'>
 <script src="js/jquery.lightbox_me.js"></script>
 <script src="js/sigma.min.js"></script>
-<script src="js/sigma.parseGexf.js"></script>
 <script src="js/sigma.parseJson.js"></script>
 <script>
 $(document).ready(function() {
 
 	// Drop-down boxes
-	$('#login-trigger').click(function() {
-		$(this).next('#login-content').toggle();
-		$(this).toggleClass('active');							
-		if ($(this).hasClass('active')) {
-			$(this).find('span').html('&#x25B2;');
-		}
-		else {
-			$(this).find('span').html('&#x25BC;');
-		}
-	})
 	$('#how-trigger').click(function() {
 		$(this).next('#how-content').toggle();
 		$(this).toggleClass('active');							
@@ -35,7 +24,7 @@ $(document).ready(function() {
 		}
 	})
 
-	// Signup lightbox
+	// Lightbox
 	$('#try-1').click(function(e) {
 		$('#sign_up').lightbox_me({
 			centered: true, 
