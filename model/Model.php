@@ -33,6 +33,19 @@ class Model {
 				'diameter' => 17,
 				'average_l' => 5.37
 			),
+			'sce_hc' => array(
+				'url' => 'http://hintdb.hgc.jp/htp/download/S_cerevisiae_hc.tar.gz',
+				'common' => 'budding yeast',
+				'name' => 'S. cerevisiae', 
+				'nodes' => ,
+				'edges' => , 
+				'average_k' => ,
+				'clustering' => ,
+				'modularity' => , 
+				'component' => ,
+				'diameter' => ,
+				'average_l' => 
+			),
 			'dme' => array(
 				'url' => 'http://hintdb.hgc.jp/htp/download/D_melanogaster_ss.tar.gz',
 				'common' => 'fruit fly',
@@ -45,6 +58,19 @@ class Model {
 				'component' => 86,
 				'diameter' => 23,
 				'average_l' => 7.68
+			),
+			'dme_hc' => array(
+				'url' => 'http://hintdb.hgc.jp/htp/download/D_melanogaster_hc.tar.gz',
+				'common' => 'fruit fly',
+				'name' => 'D. melanogaster', 
+				'nodes' => 3665,
+				'edges' => 7074, 
+				'average_k' => 3.86, 
+				'clustering' => 0.046,
+				'modularity' => 0.84, 
+				'component' => 161,
+				'diameter' => 13,
+				'average_l' => 5.00
 			),
 			'hsa' => array(
 				'url' => 'http://hintdb.hgc.jp/htp/download/H_sapiens_ss.tar.gz',
@@ -59,6 +85,19 @@ class Model {
 				'diameter' => 17,
 				'average_l' => 5.41
 			),
+			'hsa_hc' => array(
+				'url' => 'http://hintdb.hgc.jp/htp/download/H_sapiens_hc.tar.gz',
+				'common' => 'human',
+				'name' => 'H. sapiens', 
+				'nodes' => ,
+				'edges' => , 
+				'average_k' => , 
+				'clustering' => ,
+				'modularity' => , 
+				'component' => ,
+				'diameter' => ,
+				'average_l' => 
+			),			
 			'cel' => array(
 				'url' => 'http://hintdb.hgc.jp/htp/download/C_elegans_ss.tar.gz',
 				'common' => 'worm',
@@ -71,6 +110,19 @@ class Model {
 				'component' => 85,
 				'diameter' => 11,
 				'average_l' => 4.94
+			),
+			'cel_hc' => array(
+				'url' => 'http://hintdb.hgc.jp/htp/download/C_elegans_hc.tar.gz',
+				'common' => 'worm',
+				'name' => 'C. elegans', 
+				'nodes' => 2240,
+				'edges' => 3348, 
+				'average_k' => 2.989, 
+				'clustering' => 0.049,
+				'modularity' => 0.883,
+				'component' => 154,
+				'diameter' => 15,
+				'average_l' => 5.10
 			),
 			'mmu' => array(
 				'url' => 'http://hintdb.hgc.jp/htp/download/M_musculus_ss.tar.gz',
@@ -85,6 +137,19 @@ class Model {
 				'diameter' => 23,
 				'average_l' => 9.14
 			),
+			'mmu_hc' => array(
+				'url' => 'http://hintdb.hgc.jp/htp/download/M_musculus_hc.tar.gz',
+				'common' => 'mouse',
+				'name' => 'M. musculus', 
+				'nodes' => ,
+				'edges' => , 
+				'average_k' => , 
+				'clustering' => ,
+				'modularity' => , 
+				'component' => ,
+				'diameter' => ,
+				'average_l' => 
+			),
 			'rno' => array(
 				'url' => 'http://hintdb.hgc.jp/htp/download/R_norvegicus_ss.tar.gz',
 				'common' => 'rat',
@@ -97,6 +162,19 @@ class Model {
 				'component' => 68,
 				'diameter' => 8,
 				'average_l' => 2.93
+			),
+			'rno_hc' => array(
+				'url' => 'http://hintdb.hgc.jp/htp/download/R_norvegicus_hc.tar.gz',
+				'common' => 'rat',
+				'name' => 'R. norvegicus', 
+				'nodes' => ,
+				'edges' => , 
+				'average_k' => , 
+				'clustering' => ,
+				'modularity' => , 
+				'component' => ,
+				'diameter' => ,
+				'average_l' => 
 			),
 			'spo' => array(
 				'url' => 'http://hintdb.hgc.jp/htp/download/S_pombe_ss.tar.gz',
@@ -111,6 +189,19 @@ class Model {
 				'diameter' => 16,
 				'average_l' => 6.64
 			),
+			'spo_hc' => array(
+				'url' => 'http://hintdb.hgc.jp/htp/download/S_pombe_hc.tar.gz',
+				'common' => 'fission yeast',
+				'name' => 'S. pombe', 
+				'nodes' => ,
+				'edges' => , 
+				'average_k' => , 
+				'clustering' => ,
+				'modularity' => , 
+				'component' => ,
+				'diameter' => ,
+				'average_l' => 
+			),
 			'eco' => array(
 				'url' => 'http://hintdb.hgc.jp/htp/download/E_coli_ss.tar.gz',
 				'common' => 'E. coli',
@@ -124,6 +215,19 @@ class Model {
 				'diameter' => 5,
 				'average_l' => 2.01
 			),
+			'eco_hc' => array(
+				'url' => 'http://hintdb.hgc.jp/htp/download/E_coli_ss.tar.gz',
+				'common' => 'E. coli',
+				'name' => 'E. coli', 
+				'nodes' => 1869,
+				'edges' => 5699, 
+				'average_k' => 6.098, 
+				'clustering' => 0.141,
+				'modularity' => 0.641, 
+				'component' => 28,
+				'diameter' => 11,
+				'average_l' => 3.64
+			),
 			'ath' => array(
 				'url' => 'http://hintdb.hgc.jp/htp/download/A_thaliana_ss.tar.gz',
 				'common' => 'arabidopsis',
@@ -136,6 +240,19 @@ class Model {
 				'component' => 213,
 				'diameter' => 24,
 				'average_l' => 9.37
+			),
+			'ath_hc' => array(
+				'url' => 'http://hintdb.hgc.jp/htp/download/A_thaliana_hc.tar.gz',
+				'common' => 'arabidopsis',
+				'name' => 'A. thaliana', 
+				'nodes' => 3748,
+				'edges' => 7334, 
+				'average_k' => 3.914, 
+				'clustering' => 0.257,
+				'modularity' => 0.838, 
+				'component' => 197,
+				'diameter' => 16,
+				'average_l' => 5.22
 			)
 		);
 		return $summary[$org];
