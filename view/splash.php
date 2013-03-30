@@ -233,7 +233,7 @@ else {
 </div>
 <div id="footer">&copy; 2012 - 2013 <a href="http://www.tinybike.net">Jack Peterson</a>.  All rights reserved.</div>
 
-<!--- Sign-up lightbox --->
+<!--- Lightbox --->
 <div id="sign_up">
 	<h3 id="see_id">About this site</h3>
 	<div id="sign_up_form">
@@ -243,7 +243,7 @@ else {
 		<p>The visualizations shown here are generated using <a href="http://sigmajs.org">sigma.js</a>, with the underlying graph files created by <a href="https://gephi.org">Gephi</a>.  The data are the 'small-scale' datasets from <a href="http://hintdb.hgc.jp/htp/index.html">HitPredict</a>.  (Clicking on an organism name gives a direct link to download the data.)  The code for this website is open-source, and is available at <a href="https://github.com/tensorjack/ppi">GitHub</a>.</p>
 	</div>
 </div>
-<!--- end lightbox --->
+<!--- End lightbox --->
 
 </body>
 </html>
