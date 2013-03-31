@@ -29,8 +29,7 @@ if ($protein_matches != NULL) {
 				function(response) {
 					$(\'#search_results\').html(response);
 				}
-			); 
-			return false;
+			);
 			">' . $protein['entry'] . '</a></strong></td>
 		</tr>
 		<tr>

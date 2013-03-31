@@ -61,7 +61,6 @@ foreach ($ss_links as $link) {
 					$(\'#search_results\').html(response);
 				}
 			); 
-			return false;
 		">' . $link[0] . '</a></td>
 	</tr>
 	';
@@ -79,7 +78,6 @@ foreach ($hc_links as $link) {
 					$(\'#search_results\').html(response);
 				}
 			); 
-			return false;
 		">' . $link[0] . '</a></td>
 	</tr>
 	';
