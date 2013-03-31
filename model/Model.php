@@ -57,8 +57,24 @@ class Model {
 		if ($result) {
 			$protein = mysqli_fetch_array($result);
 		}
+		$sql = 'SELECT swissprot2 FROM ' . $org . '_ss WHERE swissprot1 = ' . $lookup . '
+				UNION
+				SELECT swissprot1 FROM ' . $org . '_ss WHERE swissprot2 = ' . $lookup . ';';
+		$result = mysqli_query($db, $sql);
+		$ss_links = array();
+		while ($row = mysqli_fetch_array($result)) {
+			$ss_links[] = $row;
+		}
+		$sql = 'SELECT swissprot2 FROM ' . $org . '_hc WHERE swissprot1 = ' . $lookup . '
+				UNION
+				SELECT swissprot1 FROM ' . $org . '_hc WHERE swissprot2 = ' . $lookup . ';';
+		$result = mysqli_query($db, $sql);
+		$hc_links = array();
+		while ($row = mysqli_fetch_array($result)) {
+			$hc_links[] = $row;
+		}
 		mysqli_close($db);
-		return $protein;
+		return array($protein, $ss_links, $hc_links);
 	}
 	
 	/**
