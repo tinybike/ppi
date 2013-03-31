@@ -8,11 +8,11 @@ function create_navbar() {
 				<table>
 				<tr>
 					<td>
-					<a id="try-1" class="try" href="#">about</a>								
+					<a id="try-1" class="try" href="#" onclick="return false;">about</a>								
 					</td>
 					<div id="how">
 					<td>
-					<a id="how-trigger" href="#">reference</a>
+					<a id="how-trigger" href="#" onclick="return false;">reference</a>
 					<div id="how-content">
 						<small>
 						J. Peterson, S. Presse, K. Peterson, and K. Dill. <a href="http://www.plosone.org/article/info%3Adoi%2F10.1371%2Fjournal.pone.0039052">Simulated evolution of protein-protein interaction networks with realistic topology</a>. <i>PLoS ONE</i> 7(6): e39052, 2012.
@@ -24,6 +24,9 @@ function create_navbar() {
 					</td>
 					<td>
 					<a href="https://github.com/tensorjack/DUNE">simulation</a>
+					</td>
+					<td>
+					<a href="#" onclick="$(\'#intro\').toggle(); $(\'#summary\').toggle(); return false;">help</a>
 					</td>
 					</div>
 				</tr>

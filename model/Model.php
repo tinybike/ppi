@@ -16,6 +16,22 @@ class Model {
 		return $base_link;
 	}
 	
+	public function get_protein_info($org, $lookup) {
+		$sql = 'SELECT * FROM uniprot_' . $org . ' 
+				WHERE entry LIKE "%' . $lookup . '%" 
+				OR entry_name LIKE "%' . $lookup . '%" 
+				OR protein_names LIKE "%' . $lookup . '%" 
+				OR gene_names LIKE "%' . $lookup . '%";';
+		$result = mysqli_query($db, $sql);
+		$protein_matches = array();
+		$num_matches = 0;
+		while ($row = mysqli_fetch_array($result)) {
+			$num_matches++;
+			$protein_matches[] = $row;
+		}
+		return $protein_matches;
+	}
+	
 	public function get_summary($org, $dataset) {
 		$summary = array(
 			'sce_ss' => array(

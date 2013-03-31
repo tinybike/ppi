@@ -37,6 +37,11 @@ $(document).ready(function() {
 });
 
 function init() {
+	
+	var dataset = '<?php echo $dataset; ?>';
+	var numEdges = <?php echo $summary['edges']; ?>;
+	var edgeType = (numEdges < 25000) ? 'curve' : 'line';
+
 	// Instantiate sigma.js and customize rendering
 	var sigInst = sigma.init(document.getElementById('sigma-example')).drawingProperties({
 		defaultLabelColor: '#fff',
@@ -44,10 +49,10 @@ function init() {
 		defaultLabelBGColor: '#fff',
 		defaultLabelHoverColor: '#000',
 		labelThreshold: 11,
-		defaultEdgeType: 'curve'
+		defaultEdgeType: edgeType
 	}).graphProperties({
 		minNodeSize: 0.5,
-		maxNodeSize: 4,
+		maxNodeSize: 7,
 		minEdgeSize: 1,
 		maxEdgeSize: 1
 	}).mouseProperties({
@@ -58,7 +63,7 @@ function init() {
 	var organism = '<?php echo $org; ?>';
 	var dataset = '<?php echo $dataset; ?>';
 	sigInst.parseJson('data/' + organism + '_' + dataset + '.json', function() { sigInst.draw(); });
-	 
+	
 	// Bind events
 	var greyColor = '#ccc';
 	sigInst.bind('overnodes',function(event){
@@ -164,36 +169,48 @@ else {
 	$('#<?php echo $dataset; ?>').css('background-color', '#ffcccc');
 	</script>
 	<?php
+	echo "
+	<div id='summary'>
+		<table>
+			<tr><th><a href='" . $summary['url'] . "'>" . $summary['common'] . " <i>(" . $summary['name'] . ")</a></i></th></tr>
+			<tr><td>proteins: " . $summary['nodes'] . "</td></tr>
+			<tr><td>interactions: " . $summary['edges'] . "</td></tr>
+			<tr><td>average degree: " . $summary['average_k'] . "</td></tr>
+			<tr><td>clustering coefficient: " . $summary['clustering'] . "</td></tr>
+			<tr><td>modularity: " . $summary['modularity'] . "</td></tr>
+			<tr><td>components: " . $summary['component'] . "</td></tr>
+			<tr><td>diameter: " . $summary['diameter'] . "</td></tr>
+			<tr><td>average path length: " . $summary['average_l'] . "</td></tr>
+			</tr>
+		</table>
+	</div>
+	";
+	?>
+	<div id='intro'>
+		<p>Welcome to <a href='http://interacto.me'>interacto.me</a>, an interactive visualization tool for protein interaction networks!</p>
+		
+		<p>To change the organism you're viewing, just click on one of the names in the grid above.</p>
+		
+		<p>'Small-scale' excludes data obtained from high-throughput experiments, as these data can be unreliable.  'Hi-confidence' includes selected high-throughput experimental data, using the <a href='http://hintdb.hgc.jp/htp/index.html'>HitPredict</a> method.  The hi-confidence data sets are quite a big bigger!</p>
+		
+		<p>The visualizations shown here are generated using <a href='http://sigmajs.org'>sigma.js</a>, with the underlying graph files created by <a href='https://gephi.org'>Gephi</a>.  The layouts are generated using Gephi's ForceAtlas2 algorithm.  The data used here are the small-scale and 'hi-confidence' datasets from <a href='http://hintdb.hgc.jp/htp/index.html'>HitPredict</a>.  For the small-scale datasets, both colors and node sizes represent degree (number of interactions).  For the hi-confidence datasets, node sizes represent degree, and the colors partition the graph by modularity class ('communities' of proteins).</p>
+		
+		<p>Click on the 'about' button in the upper left hand corner of the site to learn more about the science behind <a href='http://interacto.me'>interacto.me</a>.</p>
+	</div>
+	<?php
 	if (isset($_GET['ppi'])) {
-		echo "
-		<div id='summary'>
-			<table>
-				<tr><th><a href='" . $summary['url'] . "'>" . $summary['common'] . " <i>(" . $summary['name'] . ")</a></i></th></tr>
-				<tr><td>proteins: " . $summary['nodes'] . "</td></tr>
-				<tr><td>interactions: " . $summary['edges'] . "</td></tr>
-				<tr><td>average degree: " . $summary['average_k'] . "</td></tr>
-				<tr><td>clustering coefficient: " . $summary['clustering'] . "</td></tr>
-				<tr><td>modularity: " . $summary['modularity'] . "</td></tr>
-				<tr><td>components: " . $summary['component'] . "</td></tr>
-				<tr><td>diameter: " . $summary['diameter'] . "</td></tr>
-				<tr><td>average path length: " . $summary['average_l'] . "</td></tr>
-				</tr>
-			</table>
-		</div>
-		";
+		echo '
+		<script>
+		$("#intro").hide();
+		</script>
+		';
 	}
 	else {
-		echo "
-		<div id='intro'>
-			<p>Welcome to <a href='http://interacto.me'>interacto.me</a>, an interactive visualization tool for protein interaction networks!</p>
-			
-			<p>To change the organism you're viewing, just click on one of the names in the grid above.</p>
-			
-			<p>The visualizations shown here are generated using <a href='http://sigmajs.org'>sigma.js</a>, with the underlying graph files created by <a href='https://gephi.org'>Gephi</a>.  The data used here are the small-scale and 'hi-confidence' datasets from <a href='http://hintdb.hgc.jp/htp/index.html'>HitPredict</a>.</p>
-			
-			<p>Click on the 'about' button in the upper left hand corner of the site to learn more about the science behind <a href='http://interacto.me'>interacto.me</a>.</p>
-		</div>
-		";
+		echo '
+		<script>
+		$("#summary").hide();
+		</script>
+		';
 	}
 	?>
 	<div id="rightbar">
