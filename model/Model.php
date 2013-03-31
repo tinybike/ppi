@@ -16,22 +16,54 @@ class Model {
 		return $base_link;
 	}
 	
-	public function get_protein_info($org, $lookup) {
+	/**
+	 * Sanitize user query and search MySQL database for protein or gene name,
+	 * or UniProt/SwissProt ID matches.
+	 */
+	public function protein_search($org, $lookup) {
+		include_once('model/dbfun.php');
+		$db = makeDBConnection();
+		$lookup = dbSafe($db, '%' . strtoupper($lookup) . '%');
 		$sql = 'SELECT * FROM uniprot_' . $org . ' 
-				WHERE entry LIKE "%' . $lookup . '%" 
-				OR entry_name LIKE "%' . $lookup . '%" 
-				OR protein_names LIKE "%' . $lookup . '%" 
-				OR gene_names LIKE "%' . $lookup . '%";';
+				WHERE entry LIKE ' . $lookup . '
+				OR entry_name LIKE ' . $lookup . '
+				OR protein_names LIKE ' . $lookup . ' 
+				OR gene_names LIKE ' . $lookup . ';';
 		$result = mysqli_query($db, $sql);
 		$protein_matches = array();
 		$num_matches = 0;
-		while ($row = mysqli_fetch_array($result)) {
-			$num_matches++;
-			$protein_matches[] = $row;
+		if ($result) {
+			while ($row = mysqli_fetch_array($result)) {
+				$num_matches++;
+				$protein_matches[] = $row;
+			}
 		}
+		else {
+			$protein_matches = NULL;
+		}
+		mysqli_close($db);
 		return $protein_matches;
 	}
 	
+	/**
+	 * Fetch detailed info for selected protein.
+	 */
+	public function get_protein_info($org, $lookup) {
+		include_once('model/dbfun.php');
+		$db = makeDBConnection();
+		$lookup = dbSafe($db, strtoupper($lookup));
+		$sql = 'SELECT * FROM uniprot_' . $org . ' WHERE entry = ' . $lookup . ';';
+		$result = mysqli_query($db, $sql);
+		if ($result) {
+			$protein = mysqli_fetch_array($result);
+		}
+		mysqli_close($db);
+		return $protein;
+	}
+	
+	/**
+	 * Fetch basic statistics for the selected organism and dataset.
+	 */
 	public function get_summary($org, $dataset) {
 		$summary = array(
 			'sce_ss' => array(

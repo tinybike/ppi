@@ -10,9 +10,22 @@
 <script src="js/sigma.min.js"></script>
 <script src="js/sigma.parseJson.js"></script>
 <script>
+var organism = '<?php echo $org; ?>';
+var dataset = '<?php echo $dataset; ?>';
+
 $(document).ready(function() {
 
-	// Drop-down box
+	// Drop-down boxes
+	$('#login-trigger').click(function() {
+		$(this).next('#login-content').toggle();
+		$(this).toggleClass('active');							
+		if ($(this).hasClass('active')) {
+			$(this).find('span').html('&#x25B2;');
+		}
+		else {
+			$(this).find('span').html('&#x25BC;');
+		}
+	})
 	$('#how-trigger').click(function() {
 		$(this).next('#how-content').toggle();
 		$(this).toggleClass('active');							
@@ -34,11 +47,20 @@ $(document).ready(function() {
 			});
 		e.preventDefault();
 	});
+	
+	// Search query
+	$('#protein_lookup').submit(function() {
+		$.post('index.php?ppi=' + organism + '&d=' + dataset, $(this).serialize(), 
+			function(response) {
+				$('#search_results').html(response).show();
+			}
+		);
+		return false;
+	});	
 });
 
 function init() {
 	
-	var dataset = '<?php echo $dataset; ?>';
 	var numEdges = <?php echo $summary['edges']; ?>;
 	var edgeType = (numEdges < 25000) ? 'curve' : 'line';
 
@@ -60,8 +82,6 @@ function init() {
 	});
  
 	// Parse a JSON encoded file to fill the graph
-	var organism = '<?php echo $org; ?>';
-	var dataset = '<?php echo $dataset; ?>';
 	sigInst.parseJson('data/' + organism + '_' + dataset + '.json', function() { sigInst.draw(); });
 	
 	// Bind events
@@ -191,7 +211,9 @@ else {
 		
 		<p>To change the organism you're viewing, just click on one of the names in the grid above.</p>
 		
-		<p>'Small-scale' excludes data obtained from high-throughput experiments, as these data can be unreliable.  'Hi-confidence' includes selected high-throughput experimental data, using the <a href='http://hintdb.hgc.jp/htp/index.html'>HitPredict</a> method.  The hi-confidence data sets are quite a big bigger!</p>
+		<p>'Small-scale' excludes data obtained from high-throughput experiments, as these data can be unreliable.  'Hi-confidence' includes selected high-throughput experimental data, using the <a href='http://hintdb.hgc.jp/htp/index.html'>HitPredict</a> method.</p>
+		
+		<p>To search for a protein or gene, type the protein or gene name, or the UniProt/Swissprot ID, then click 'search'.</p>
 		
 		<p>The visualizations shown here are generated using <a href='http://sigmajs.org'>sigma.js</a>, with the underlying graph files created by <a href='https://gephi.org'>Gephi</a>.  The layouts are generated using Gephi's ForceAtlas2 algorithm.  The data used here are the small-scale and 'hi-confidence' datasets from <a href='http://hintdb.hgc.jp/htp/index.html'>HitPredict</a>.  For the small-scale datasets, both colors and node sizes represent degree (number of interactions).  For the hi-confidence datasets, node sizes represent degree, and the colors partition the graph by modularity class ('communities' of proteins).</p>
 		
@@ -213,6 +235,20 @@ else {
 		';
 	}
 	?>
+	<div id="searchbar">
+		<form method="post" class="form" id="protein_lookup">
+			<table>
+				<tr>
+				<td><input id="lookup" class="text_input" type="text" name="lookup" size="10" required="required" placeholder="Search for proteins or genes..." /></td>
+				</tr>
+				<tr>
+				<td><input class="button" type="submit" value="Search" /></td>
+				</tr>
+			</table>
+		</form>
+	</div>
+	<div id="search_results"></div>
+	<div id="infobox"></div>
 	<div id="rightbar">
 		<table>
 			<tr><th>datasets</th></tr>
@@ -221,6 +257,9 @@ else {
 			</span></td></tr>
 			<tr><td><span class="hover-item"><a href="http://hintdb.hgc.jp/htp/index.html">HitPredict</a>
 				<span>small-scale 'high-confidence' data, and predicted interactions based on Bayesian inference</span>
+			</span></td></tr>
+			<tr><td><span class="hover-item"><a href="http://www.uniprot.org/">UniProt</a>
+				<span>comprehensive and freely accessible resource of protein sequence and functional information</span>
 			</span></td></tr>
 			<tr><td><span class="hover-item"><a href="http://string-db.org/">STRING</a>
 				<span>database of known and predicted protein interactions, includes direct (physical) and indirect (functional) associations</span>

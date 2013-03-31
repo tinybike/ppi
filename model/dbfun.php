@@ -2,7 +2,7 @@
 // Connect to MySQL DB
 function makeDBConnection() {
 	
-	include 'db_params.php';
+	include 'model/dbparams.php';
 
 	$connection = mysqli_connect($db_host, $db_user, $db_pass);
 	if (mysqli_connect_errno()) {

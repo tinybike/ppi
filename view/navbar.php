@@ -34,17 +34,33 @@ function create_navbar() {
 			</div>
 			</nav>
 		</div>
-	<nav>
-		<div class="tabs_table">
-			<div class="tabs">
-			<table>
-				<tr>
-				<td><a href="http://dillgroup.org">dillgroup</a></td>
-				</tr>
-			</table>
+		<nav>
+			<div class="tabs_table">
+				<div class="tabs">
+				<table>
+					<!---<div id="login">
+						<tr>
+						<td>
+							<a id="login-trigger" href="#">search</a>
+							<div id="login-content">
+								<form action="index.php" method="post" class="form">
+									<fieldset id="inputs">
+										<input id="username" type="username" name="login_username" placeholder="Username" required />
+										<input id="password" type="password" name="login_password" placeholder="Password" required />
+									</fieldset>
+									<fieldset id="actions">
+										<input class="button" type="submit" id="submit" value="Search" />
+									</fieldset>
+								</form>
+							</div>
+						</td>--->	
+						<td><a href="http://dillgroup.org">dillgroup</a></td>
+						</tr>
+					</div>
+				</table>
+				</div>
 			</div>
-		</div>
-	</nav>
+		</nav>
 	</div>
 	';
 }

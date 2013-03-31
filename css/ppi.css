@@ -60,7 +60,8 @@ a {
 }
 
 .text_input {
-    padding: 7px;
+	margin-top: 10px;
+    padding: 3px;
     border: 1px solid #ccc;
     border-radius: 5px;
 }
@@ -679,6 +680,29 @@ input.medium_button {
 	font-weight: normal; 
 }
 
+/* Search */
+#searchbar {
+	width: 15%;
+	float: right;
+	clear: right;
+	padding-right: 10px;
+	padding-top: 0;
+	font-size: 11pt;
+	padding-bottom: 20px;
+}
+#searchbar table {
+	width: 100%;
+	line-height: 18px;
+	border: 1px solid #777;
+}
+#searchbar td {
+	text-align: center;
+}
+#searchbar th {
+	border: 1px solid #777;
+	font-weight: normal; 
+}
+
 #sigma-parent {
 	width: 100%;
 	height: 250px;
@@ -759,4 +783,108 @@ input.medium_button {
 	border-radius: 10px;
 	padding: 10px;
 	background-color: #fff;
+}
+
+#login-content #actions {
+	margin: 0 0 0 0;
+}
+#login-content #submit {
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	border-radius: 3px;
+	float: left;
+	height: 30px;
+	padding: 0;
+	width: 70px;
+	cursor: pointer;
+	font: 14px Arial, Helvetica;
+	color: #000;
+}
+#login-content #submit:active {		
+	outline: none;
+}
+#login-content #submit::-moz-focus-inner {
+	border: none;
+}
+#login-content label {
+	float: right;
+	line-height: 30px;
+	font-size: 11pt;
+}
+#login-content label input {
+	position: relative;
+	top: 2px;
+	right: 2px;
+}
+nav #login {
+	border-right: 1px solid #ddd;
+}
+nav #login-trigger a,
+nav #signup a {
+	display: inline-block;
+	*display: inline;
+	*zoom: 1;
+	height: 25px;
+	line-height: 25px;
+	text-decoration: none;
+	color: #444;
+	text-shadow: 0 1px 0 #fff; 
+}
+nav #login-trigger:hover,
+nav #login .active,
+nav #signup a:hover {
+	background: #fff;
+}
+nav #login-content {
+	display: none;
+	position: absolute;
+	top: 25px;
+	right: 1px;
+	width: 250px;
+	z-index: 999;
+	background: #fff;
+	padding: 15px;
+	border: 1px solid #777;
+	-moz-border-radius: 3px 0 3px 3px;
+	-webkit-border-radius: 3px 0 3px 3px;
+	border-radius: 3px 0 3px 3px;
+}
+
+/* Search results */
+#search_results {
+	display: none;
+	position: absolute;
+	top: 50px;
+	right: 270px;
+	width: 450px;
+	background: #fff;
+	padding: 15px;
+	border: 1px solid #777;
+	border-radius: 5px;
+}
+
+#results_header {
+	float: left;
+}
+#close_button {
+	float: right;
+	text-align: right;
+}
+#show_results {
+	max-height: 500px;
+	overflow-y: auto;
+	clear: both;
+}
+#show_results table {
+	margin-top: 10px;
+}
+#search_results th {
+	text-align: left;
+	font-size: 12pt;
+}
+#protein_details table {
+	width: 100%;
+}
+#protein_details td {
+	font-size: 9pt;
 }
