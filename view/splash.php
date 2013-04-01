@@ -353,7 +353,7 @@ else {
 	<p>To drill down deeper, you can explore one protein at a time in two different ways:</p>
 	<ol>
 	<li><p>Click on a node to get more information about the particular protein it represents.  You'll get a zoomed-in view, plus some basic information about the protein from the UniProt database. You can click on the protein name in the popup box to visit the UniProt page, which has much more detail about the protein, including its amino acid sequence. You can also zoom in using your mouse wheel, and drag the network around on your screen by using the mouse.</p></li>
-	<li><p>To search for a particular protein or gene of interest, type the name of the protein or gene (or the UniProt/Swissprot ID), then click 'search' in the box at the upper right. 	For more information about how these protein-protein networks are generated, click the 'about' button in the upper left hand corner.</p></li>
+	<li><p>To search for a particular protein or gene of interest, type the name of the protein or gene (or the UniProt/Swissprot ID), then click 'search' in the box at the upper right. 	For more information about how these protein-protein networks are generated, click the 'about' button in the upper right hand corner.</p></li>
 	</ol>
 	<p>(To display this popup again, just click 'help' on the top bar.)</p>
 </div>	
