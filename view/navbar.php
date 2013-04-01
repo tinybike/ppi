@@ -26,13 +26,16 @@ function create_navbar() {
 					<a href="https://github.com/tensorjack/DUNE">simulation</a>
 					</td>
 					<td>
-					<a href="#" onclick="$(\'#intro\').toggle(); $(\'#summary\').toggle(); return false;">help</a>
+					<a href="#" onclick="$(\'#intro\').lightbox_me({centered: true});/*$(\'#intro\').toggle(); $(\'#summary\').toggle();*/ return false;">help</a>
 					</td>
 					</div>
 				</tr>
 				</table>
 			</div>
 			</nav>
+		</div>
+		<div id="title_label">
+		<img src="images/interactome.png" alt="interactome">
 		</div>
 		<nav>
 			<div class="tabs_table">

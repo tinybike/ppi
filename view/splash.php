@@ -12,6 +12,7 @@
 <script>
 var organism = '<?php echo $org; ?>';
 var dataset = '<?php echo $dataset; ?>';
+var showIntro = '<?php echo (!isset($_GET['ppi'])); ?>';
 
 $(document).ready(function() {
 
@@ -44,10 +45,13 @@ $(document).ready(function() {
 			onLoad: function() { 
 				$('#sign_up').find('input:first').focus()
 				}
-			});
+		});
 		e.preventDefault();
 	});
-	
+	if (showIntro) {
+		$('#intro').lightbox_me({centered: true});
+	}
+		
 	// Search query
 	$('#protein_lookup').submit(function() {
 		$.post('index.php?ppi=' + organism + '&d=' + dataset, $(this).serialize(), 
@@ -217,21 +221,8 @@ else {
 	</div>
 	";
 	?>
-	<div id='intro'>
-		<p>Welcome to <a href='http://interacto.me'>interacto.me</a>, an interactive visualization tool for protein interaction networks!</p>
-		
-		<p>To change the organism you're viewing, just click on one of the names in the grid above.</p>
-		
-		<p>'Small-scale' excludes data obtained from high-throughput experiments, as these data can be unreliable.  'Hi-confidence' includes selected high-throughput experimental data, using the <a href='http://hintdb.hgc.jp/htp/index.html'>HitPredict</a> method.</p>
-		
-		<p>To get a closer look at a protein you're interested in, click on the protein and you'll get a zoomed-in view, plus some basic information about the protein from the UniProt database.  You can click on the protein name in the popup box to visit the UniProt page, which has much more details about the protein, including its amino acid sequence!  You can also zoom in using your mouse wheel, and drag the network around on your screen by using the mouse.</p>
-		
-		<p>To search for a protein or gene, type the protein or gene name (or the UniProt/Swissprot ID), then click 'search'.</p>
-		
-		<p>Click on the 'about' button in the upper left hand corner of the site to learn more about the science behind <a href='http://interacto.me'>interacto.me</a>.</p>
-	</div>
 	<?php
-	if (isset($_GET['ppi'])) {
+	/*if (isset($_GET['ppi'])) {
 		echo '
 		<script>
 		$("#intro").hide();
@@ -244,7 +235,7 @@ else {
 		$("#summary").hide();
 		</script>
 		';
-	}
+	}*/
 	?>
 	<div id="searchbar">
 		<form method="post" class="form" id="protein_lookup">
@@ -341,8 +332,11 @@ else {
 
 <!--- Lightbox --->
 <div id="sign_up">
-	<h3 id="see_id">About this site</h3>
-	<div id="sign_up_form">
+	<h3 id="see_id" style="float:left">About this site</h3>
+	<div id="close_button">
+	<a href="#" onclick="$('#sign_up').trigger('close'); return false;"><img src="images/close_button.png" alt="close" width="18px" /></a>
+	</div>
+	<div id="sign_up_form" style="clear:both; padding-top:10px;">
 		<p>The <a href="http://dillgroup.org">Dill research group</a>, at <a href="http://www.stonybrook.edu">Stony Brook University's</a> <a href="http://www.laufercenter.org">Laufer Center</a>, has recently begun a computational study of eukaryotic protein-protein interaction (PPI) network evolution.  We published our basic model layout in <i>PLoS ONE</i>, in 2012:</p>
 		<p>J. Peterson, S. Presse, K. Peterson, and K. Dill. <a href="http://www.plosone.org/article/info%3Adoi%2F10.1371%2Fjournal.pone.0039052">Simulated evolution of protein-protein interaction networks with realistic topology</a>. <i>PLoS ONE</i> 7(6): e39052, 2012.</p>
 		<p>The Matlab scripts we used to carry out our simulations are freely available on <a href="https://github.com/tensorjack/DUNE">GitHub</a>.  (In addition, you will need to install the <a href="http://www.mathworks.com/matlabcentral/fileexchange/10922">MatlabBGL package</a> and the <a href="https://sites.google.com/a/brain-connectivity-toolbox.net/bct/Home/functions/modularity_louvain_und.m?attredirects=0">Louvain modularity script</a>.)  In our model, protein networks evolve by two known biological mechanisms: (1) a gene can duplicate, putting one copy under new selective pressures that allow it to establish new relationships to other proteins in the cell, and (2) a protein undergoes a mutation that causes it to develop new binding or new functional relationships with existing proteins. In addition, we allow for the possibility that once a mutated protein develops a new relationship with another protein (called the target), the mutant protein can also more readily establish relationships with other proteins in the target’s neighborhood.</p>
@@ -350,6 +344,19 @@ else {
 		<p>The code for this website is open-source, and is available at <a href="https://github.com/tensorjack/ppi">GitHub</a>.</p>
 	</div>
 </div>
+<div id='intro'>
+	<div id="close_button">
+	<a href="#" onclick="$('#intro').trigger('close'); return false;"><img src="images/close_button.png" alt="close" width="18px" /></a>
+	</div>
+	<p><strong>Welcome to <a href="http://interacto.me">interacto.me</a>, an interactive tool for visualizing protein interaction networks!</strong></p>
+	<p>Choose your organism of interest.  Then push the corresponding button at the top left, to generate the protein-protein interaction networks for that organism.  The panel below those buttons gives you the option for "small-scale" vs. "high-confidence".  'Hi-confidence' uses selected high-throughput experimental data, using the <a href='http://hintdb.hgc.jp/htp/index.html'>HitPredict</a> method.  'Small-scale' excludes data obtained from high-throughput experiments, as these data can be unreliable.</p>
+	<p>To drill down deeper, you can explore one protein at a time in two different ways:</p>
+	<ol>
+	<li><p>Click on a node to get more information about the particular protein it represents.  You'll get a zoomed-in view, plus some basic information about the protein from the UniProt database. You can click on the protein name in the popup box to visit the UniProt page, which has much more detail about the protein, including its amino acid sequence. You can also zoom in using your mouse wheel, and drag the network around on your screen by using the mouse.</p></li>
+	<li><p>To search for a particular protein or gene of interest, type the name of the protein or gene (or the UniProt/Swissprot ID), then click 'search' in the box at the upper right. 	For more information about how these protein-protein networks are generated, click the 'about' button in the upper left hand corner.</p></li>
+	</ol>
+	<p>(To display this popup again, just click 'help' on the top bar.)</p>
+</div>	
 <!--- End lightbox --->
 
 </body>

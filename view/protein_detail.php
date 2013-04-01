@@ -1,13 +1,13 @@
 <div id="results_header">
-<?php
-echo '
-<h3><a href="http://www.uniprot.org/uniprot/' . $protein['entry'] . '">' . $protein['entry'] . '</a></h3>
-<i>' . $protein['organism'] . '</i>
-';
-?>
+	<?php
+	echo '
+	<h3><a href="http://www.uniprot.org/uniprot/' . $protein['entry'] . '">' . $protein['entry'] . '</a></h3>
+	<i>' . $protein['organism'] . '</i>
+	';
+	?>
 </div>
 <div id="close_button">
-<a href="#" onclick="$('#search_results').hide(); return false;"><img src="images/close_button.png" alt="close" width="18px" /></a>
+	<a href="#" onclick="$('#search_results').hide(); return false;"><img src="images/close_button.png" alt="close" width="18px" /></a>
 </div>
 <?php
 $genes = explode(' ', $protein['gene_names']);
