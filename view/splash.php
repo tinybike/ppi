@@ -303,13 +303,13 @@ else {
 			<tr><td><span class="hover-item"><a href="http://www.mathworks.com/matlabcentral/fileexchange/10922">MatlabBGL</a>
 				<span>very fast graphs package for Matlab</span>
 			</span></td></tr>
-			<tr><td><span class="hover-item"><a href="https://sites.google.com/a/brain-connectivity-toolbox.net/bct/Home">Brain Connectivity Toolbox</a>
+			<tr><td><span class="hover-item"><a href="https://sites.google.com/site/bctnet/">Brain Connectivity Toolbox</a>
 				<span>Matlab scripts to calculate most standard graph-theoretic quantities</span>
 			</span></td></tr>
 			<tr><td><span class="hover-item"><a href="http://www.cmth.bnl.gov/%7Emaslov/matlab.htm">Sergei Maslov's website</a>
 				<span>Matlab scripts for degree-preserving network rewiring and degree-degree correlation maps</span>
 			</span></td></tr>
-			<tr><td><span class="hover-item"><a href="https://sites.google.com/a/brain-connectivity-toolbox.net/bct/Home/functions/modularity_louvain_und.m?attredirects=0">modularity calculator</a>
+			<tr><td><span class="hover-item"><a href="https://sites.google.com/site/bctnet/Home/functions/modularity_louvain_und.m?attredirects=0">modularity calculator</a>
 				<span>Matlab implementation of the Louvain algorithm to calculate network modularity</span>
 			</span></td></tr>
 			<tr><td><span class="hover-item"><a href="http://cbg.garvan.unsw.edu.au/pina/">PINA</a>
