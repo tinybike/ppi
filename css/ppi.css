@@ -664,6 +664,7 @@ input.medium_button {
 	padding-right: 10px;
 	padding-top: 0;
 	font-size: 11pt;
+	background-color: #fff;
 }
 #rightbar table {
 	width: 100%;
@@ -712,8 +713,8 @@ input.medium_button {
 #sigma-example {
 	position: absolute;
 	left: 100px;
-	width: 80%;
-	height: 85%;
+	width: 78%;
+	height: 90%;
 }
 
 /* Leftbar-summary */

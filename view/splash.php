@@ -70,7 +70,7 @@ function init() {
 		defaultLabelSize: 14,
 		defaultLabelBGColor: '#fff',
 		defaultLabelHoverColor: '#000',
-		labelThreshold: 11,
+		labelThreshold: 100,
 		defaultEdgeType: edgeType
 	}).graphProperties({
 		minNodeSize: 0.5,
@@ -125,8 +125,19 @@ function init() {
 			n.color = n.attr['grey'] ? n.attr['true_color'] : n.color;
 			n.attr['grey'] = 0;
 		}).draw(2,2,2);
-	});
-	
+	}).bind('downnodes', function(event) {
+		var clickNode = event.content[0];
+		sigInst.iterNodes(function(n){
+			node = n;
+			$.post('index.php?ppi=' + organism + '&d=' + dataset, {'protein_id': clickNode}, 
+				function(response) {
+					sigInst.zoomTo(node.displayX,node.displayY,12);
+					$('#search_results').html(response).show();
+				}
+			);
+		},[event.content[0]]);
+	}).draw(2,2,2);
+		
 	// Draw the graph
 	sigInst.draw();
 }
