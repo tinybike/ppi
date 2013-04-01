@@ -775,10 +775,16 @@ input.medium_button {
 
 /* Title label */
 #title_label {
-	position: absolute;
+	/*position: absolute;
 	left: 50%;
 	margin-left: -200px;
-	top: 0px;
+	top: 0px;*/
+	text-align: center;
+	float: center;
+}
+#title_label img {
+	margin: auto;
+	max-width: 92%;
 }
 
 /* Intro text */
