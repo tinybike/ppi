@@ -1,18 +1,15 @@
-<?php include 'view/navbar.php'; ?>
 <!DOCTYPE html>
 <html>
 <head>
-<title>interacto.me: protein interaction network visualization and modeling</title>
-<?php include 'view/headers.php'; ?>
-<link href='css/bootstrap.min.css' rel='stylesheet' type='text/css'>
-<link href='css/bootstrap-responsive.min.css' rel='stylesheet' type='text/css'>
+<title>interacto.me: visualization for protein interaction networks</title>
+<?php include 'view/headers.html'; ?>
 <script src="js/jquery.lightbox_me.js"></script>
 <script src="js/sigma.min.js"></script>
 <script src="js/sigma.parseJson.js"></script>
 <script>
 var organism = '<?php echo $org; ?>';
 var dataset = '<?php echo $dataset; ?>';
-var showIntro = '<?php echo (!isset($_GET['ppi'])); ?>';
+var showIntro = '<?php echo (!isset($_GET["ppi"])); ?>';
 
 $(document).ready(function() {
 
@@ -167,7 +164,7 @@ else {
 
 <body>
 <div class="wrapper">
-	<?php create_navbar(); ?>
+	<?php include 'view/navbar.html'; ?>
 	<br />
 	<div class="span12 sigma-parent" id="sigma-example-parent">
 		<div class="sigma-expand" id="sigma-example"></div>
