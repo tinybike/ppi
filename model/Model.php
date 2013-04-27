@@ -1,323 +1,144 @@
 <?php
 class Model {
 
-	protected function full_url() {
-		$s = empty($_SERVER["HTTPS"]) ? '' : ($_SERVER["HTTPS"] == "on") ? "s" : "";
-		$sp = strtolower($_SERVER["SERVER_PROTOCOL"]);
-		$protocol = substr($sp, 0, strpos($sp, "/")) . $s;
-		return $protocol . "://" . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'];
-	}
-
-	protected function base_url() {
-		$actual_link = $this->full_url();
-		$exploded_link = explode('?', $actual_link);
-		$exploded_link_and = explode('&', $actual_link);
-		$base_link = $exploded_link[0];
-		return $base_link;
+	/**
+	 * Connect to MySQL database using mysqli, with parameters specified 
+	 * in dbparams.php.
+	 */
+	protected function make_db_connection() {	
+		include 'model/dbparams.php';
+		$db = new mysqli($db_host, $db_user, $db_pass, $db_name);
+		// Check connection
+		if ($db->connect_errno) {
+			printf("Connect failed: %s\n", $db->connect_error);
+			exit();
+		}
+		return $db;
 	}
 	
 	/**
-	 * Sanitize user query and search MySQL database for protein or gene name,
-	 * or UniProt/SwissProt ID matches.
+	 * Check organism three-letter code against pre-defined whitelist to guard
+	 * against injection.
+	 */
+	protected function check_org_list($db, $org) {
+		$result = $db->query('SELECT * FROM org_list');
+		$org_list = array();
+		while ($row = $result->fetch_array()) {
+			$org_list[] = $row[0];
+		}
+		$in_list = (in_array($org, $org_list)) ? TRUE : FALSE;
+		return $in_list;
+	}
+	
+	/**
+	 * Sanitize user query and search database for protein/gene name matches,
+	 * and/or UniProt/SwissProt ID matches.
 	 */
 	public function protein_search($org, $lookup) {
-		include_once('model/dbfun.php');
-		$db = makeDBConnection();
-		$lookup = dbSafe($db, '%' . strtoupper($lookup) . '%');
-		$sql = 'SELECT * FROM uniprot_' . $org . ' 
-				WHERE entry LIKE ' . $lookup . '
-				OR entry_name LIKE ' . $lookup . '
-				OR protein_names LIKE ' . $lookup . ' 
-				OR gene_names LIKE ' . $lookup . ';';
-		$result = mysqli_query($db, $sql);
+		$db = $this->make_db_connection();
+				
+		/* Fetch and return protein matches from database */
+		$stmt = $db->stmt_init();
+		$stmt->prepare('
+			SELECT * FROM uniprot_' . $org .'
+			WHERE `entry` LIKE ?
+			OR `entry_name` LIKE ?
+			OR `protein_names` LIKE ?
+			OR `gene_names` LIKE ?
+		');
+		$lookup = '%' . strtoupper($lookup) . '%';
+		$stmt->bind_param('ssss', $lookup, $lookup, $lookup, $lookup);
+		$stmt->execute();
+		
 		$protein_matches = array();
-		$num_matches = 0;
-		if ($result) {
-			while ($row = mysqli_fetch_array($result)) {
-				$num_matches++;
-				$protein_matches[] = $row;
-			}
+		$result = $stmt->get_result();
+		while ($row = $result->fetch_array()) {
+			$protein_matches[] = $row;
 		}
-		else {
-			$protein_matches = NULL;
-		}
-		mysqli_close($db);
+
+		$stmt->close();
+		$db->close();
+
 		return $protein_matches;
 	}
 	
 	/**
-	 * Fetch detailed info for selected protein.
+	 * If the protein is specified, fetch detailed information about the
+	 * protein, and lists of its small-scale and hi-confidence interaction 
+	 * partners.
 	 */
 	public function get_protein_info($org, $lookup) {
-		include_once('model/dbfun.php');
-		$db = makeDBConnection();
-		$lookup = dbSafe($db, strtoupper($lookup));
-		$sql = 'SELECT * FROM uniprot_' . $org . ' WHERE entry = ' . $lookup . ';';
-		$result = mysqli_query($db, $sql);
-		if ($result) {
-			$protein = mysqli_fetch_array($result);
+		$db = $this->make_db_connection();
+
+		/* Check organism whitelist to protect query */
+		if (!$this->check_org_list($db, $org)) {
+			$db->close();
+			return NULL;
 		}
-		$sql = 'SELECT swissprot2 FROM ' . $org . '_ss WHERE swissprot1 = ' . $lookup . '
-				UNION
-				SELECT swissprot1 FROM ' . $org . '_ss WHERE swissprot2 = ' . $lookup . ';';
-		$result = mysqli_query($db, $sql);
+		
+		/* Fetch protein information from database */
+		$stmt = $db->stmt_init();
+		$stmt->prepare('SELECT * FROM uniprot_' . $org .' WHERE `entry` = ?');
+		$lookup = strtoupper($lookup);
+		$stmt->bind_param('s', $lookup);
+		$stmt->execute();
+		$protein = $stmt->get_result()->fetch_array();
+		$stmt->close();
+		
+		/* Fetch small-scale links from database */
+		$stmt = $db->stmt_init();
+		$stmt->prepare('
+			SELECT `swissprot2` FROM ' . $org . '_ss WHERE `swissprot1` = ?
+			UNION
+			SELECT `swissprot1` FROM ' . $org . '_ss WHERE `swissprot2` = ?
+		');
+		$stmt->bind_param('ss', $lookup, $lookup);
+		$stmt->execute();
+		$result = $stmt->get_result();
 		$ss_links = array();
-		while ($row = mysqli_fetch_array($result)) {
+		while ($row = $result->fetch_array()) {
 			$ss_links[] = $row;
 		}
-		$sql = 'SELECT swissprot2 FROM ' . $org . '_hc WHERE swissprot1 = ' . $lookup . '
-				UNION
-				SELECT swissprot1 FROM ' . $org . '_hc WHERE swissprot2 = ' . $lookup . ';';
-		$result = mysqli_query($db, $sql);
+		$stmt->close();
+		
+		/* Fetch hi-confidence links from database */
+		$stmt = $db->stmt_init();
+		$stmt->prepare('
+			SELECT `swissprot2` FROM ' . $org . '_hc WHERE `swissprot1` = ?
+			UNION
+			SELECT `swissprot1` FROM ' . $org . '_hc WHERE `swissprot2` = ?
+		');
+		$stmt->bind_param('ss', $lookup, $lookup);
+		$stmt->execute();
+		$result = $stmt->get_result();
 		$hc_links = array();
-		while ($row = mysqli_fetch_array($result)) {
+		while ($row = $result->fetch_array()) {
 			$hc_links[] = $row;
 		}
-		mysqli_close($db);
+		$stmt->close();
+
+		$db->close();		
 		return array($protein, $ss_links, $hc_links);
 	}
 	
 	/**
-	 * Fetch basic statistics for the selected organism and dataset.
+	 * Fetch basic statistics for the selected organism and dataset (small
+	 * scale or hi-confidence).
 	 */
-	public function get_summary($org, $dataset) {
-		$summary = array(
-			'sce_ss' => array(
-				'url' => 'http://hintdb.hgc.jp/htp/download/S_cerevisiae_ss.tar.gz',
-				'common' => 'budding yeast',
-				'name' => 'S. cerevisiae', 
-				'nodes' => 2324,
-				'edges' => 4085, 
-				'average_k' => 3.515,
-				'clustering' => 0.146,
-				'modularity' => 0.716, 
-				'component' => 123,
-				'diameter' => 17,
-				'average_l' => 5.37
-			),
-			'sce_hc' => array(
-				'url' => 'http://hintdb.hgc.jp/htp/download/S_cerevisiae_hc.tar.gz',
-				'common' => 'budding yeast',
-				'name' => 'S. cerevisiae', 
-				'nodes' => 4953,
-				'edges' => 43647, 
-				'average_k' => 17.624,
-				'clustering' => 0.179,
-				'modularity' => 0.674, 
-				'component' => 42,
-				'diameter' => 9,
-				'average_l' => 3.255
-			),
-			'dme_ss' => array(
-				'url' => 'http://hintdb.hgc.jp/htp/download/D_melanogaster_ss.tar.gz',
-				'common' => 'fruit fly',
-				'name' => 'D. melanogaster', 
-				'nodes' => 908,
-				'edges' => 1175, 
-				'average_k' => 1.316, 
-				'clustering' => 0.204,
-				'modularity' => 0.872, 
-				'component' => 86,
-				'diameter' => 23,
-				'average_l' => 7.68
-			),
-			'dme_hc' => array(
-				'url' => 'http://hintdb.hgc.jp/htp/download/D_melanogaster_hc.tar.gz',
-				'common' => 'fruit fly',
-				'name' => 'D. melanogaster', 
-				'nodes' => 3665,
-				'edges' => 7074, 
-				'average_k' => 3.86, 
-				'clustering' => 0.046,
-				'modularity' => 0.84, 
-				'component' => 161,
-				'diameter' => 13,
-				'average_l' => 5.00
-			),
-			'hsa_ss' => array(
-				'url' => 'http://hintdb.hgc.jp/htp/download/H_sapiens_ss.tar.gz',
-				'common' => 'human',
-				'name' => 'H. sapiens', 
-				'nodes' => 3989,
-				'edges' => 7064, 
-				'average_k' => 3.542, 
-				'clustering' => 0.124,
-				'modularity' => 0.694, 
-				'component' => 204,
-				'diameter' => 17,
-				'average_l' => 5.41
-			),
-			'hsa_hc' => array(
-				'url' => 'http://hintdb.hgc.jp/htp/download/H_sapiens_hc.tar.gz',
-				'common' => 'human',
-				'name' => 'H. sapiens', 
-				'nodes' => 10107,
-				'edges' => 43785, 
-				'average_k' => 8.664, 
-				'clustering' => 0.257,
-				'modularity' => 0.686, 
-				'component' => 68,
-				'diameter' => 10,
-				'average_l' => 2.87
-			),			
-			'cel_ss' => array(
-				'url' => 'http://hintdb.hgc.jp/htp/download/C_elegans_ss.tar.gz',
-				'common' => 'worm',
-				'name' => 'C. elegans', 
-				'nodes' => 379,
-				'edges' => 322, 
-				'average_k' => 1.699, 
-				'clustering' => 0.137,
-				'modularity' => 0.931,
-				'component' => 85,
-				'diameter' => 11,
-				'average_l' => 4.94
-			),
-			'cel_hc' => array(
-				'url' => 'http://hintdb.hgc.jp/htp/download/C_elegans_hc.tar.gz',
-				'common' => 'worm',
-				'name' => 'C. elegans', 
-				'nodes' => 2240,
-				'edges' => 3348, 
-				'average_k' => 2.989, 
-				'clustering' => 0.049,
-				'modularity' => 0.883,
-				'component' => 154,
-				'diameter' => 15,
-				'average_l' => 5.10
-			),
-			'mmu_ss' => array(
-				'url' => 'http://hintdb.hgc.jp/htp/download/M_musculus_ss.tar.gz',
-				'common' => 'mouse',
-				'name' => 'M. musculus', 
-				'nodes' => 940,
-				'edges' => 864, 
-				'average_k' => 1.838, 
-				'clustering' => 0.188,
-				'modularity' => 0.95, 
-				'component' => 179,
-				'diameter' => 23,
-				'average_l' => 9.14
-			),
-			'mmu_hc' => array(
-				'url' => 'http://hintdb.hgc.jp/htp/download/M_musculus_hc.tar.gz',
-				'common' => 'mouse',
-				'name' => 'M. musculus', 
-				'nodes' => 2834,
-				'edges' => 4200, 
-				'average_k' => 2.964, 
-				'clustering' => 0.204,
-				'modularity' => 0.897, 
-				'component' => 146,
-				'diameter' => 17,
-				'average_l' => 5.04
-			),
-			'rno_ss' => array(
-				'url' => 'http://hintdb.hgc.jp/htp/download/R_norvegicus_ss.tar.gz',
-				'common' => 'rat',
-				'name' => 'R. norvegicus', 
-				'nodes' => 302,
-				'edges' => 259, 
-				'average_k' => 1.715, 
-				'clustering' => 0.175,
-				'modularity' => 0.921, 
-				'component' => 68,
-				'diameter' => 8,
-				'average_l' => 2.93
-			),
-			'rno_hc' => array(
-				'url' => 'http://hintdb.hgc.jp/htp/download/R_norvegicus_hc.tar.gz',
-				'common' => 'rat',
-				'name' => 'R. norvegicus', 
-				'nodes' => 1032,
-				'edges' => 1190, 
-				'average_k' => 2.306, 
-				'clustering' => 0.185,
-				'modularity' => 0.879, 
-				'component' => 43,
-				'diameter' => 13,
-				'average_l' => 3.97
-			),
-			'spo_ss' => array(
-				'url' => 'http://hintdb.hgc.jp/htp/download/S_pombe_ss.tar.gz',
-				'common' => 'fission yeast',
-				'name' => 'S. pombe', 
-				'nodes' => 671,
-				'edges' => 813, 
-				'average_k' => 2.423, 
-				'clustering' => 0.239,
-				'modularity' => 0.881, 
-				'component' => 82,
-				'diameter' => 16,
-				'average_l' => 6.64
-			),
-			'spo_hc' => array(
-				'url' => 'http://hintdb.hgc.jp/htp/download/S_pombe_hc.tar.gz',
-				'common' => 'fission yeast',
-				'name' => 'S. pombe', 
-				'nodes' => 982,
-				'edges' => 1459, 
-				'average_k' => 2.971, 
-				'clustering' => 0.421,
-				'modularity' => 0.917, 
-				'component' => 72,
-				'diameter' => 18,
-				'average_l' => 6.5
-			),
-			'eco_ss' => array(
-				'url' => 'http://hintdb.hgc.jp/htp/download/E_coli_ss.tar.gz',
-				'common' => 'E. coli',
-				'name' => 'E. coli', 
-				'nodes' => 252,
-				'edges' => 194, 
-				'average_k' => 1.54, 
-				'clustering' => 0.371,
-				'modularity' => 0.959, 
-				'component' => 89,
-				'diameter' => 5,
-				'average_l' => 2.01
-			),
-			'eco_hc' => array(
-				'url' => 'http://hintdb.hgc.jp/htp/download/E_coli_ss.tar.gz',
-				'common' => 'E. coli',
-				'name' => 'E. coli', 
-				'nodes' => 1869,
-				'edges' => 5699, 
-				'average_k' => 6.098, 
-				'clustering' => 0.141,
-				'modularity' => 0.641, 
-				'component' => 28,
-				'diameter' => 11,
-				'average_l' => 3.64
-			),
-			'ath_ss' => array(
-				'url' => 'http://hintdb.hgc.jp/htp/download/A_thaliana_ss.tar.gz',
-				'common' => 'arabidopsis',
-				'name' => 'A. thaliana', 
-				'nodes' => 2189,
-				'edges' => 3172, 
-				'average_k' => 2.898, 
-				'clustering' => 0.257,
-				'modularity' => 0.936, 
-				'component' => 213,
-				'diameter' => 24,
-				'average_l' => 9.37
-			),
-			'ath_hc' => array(
-				'url' => 'http://hintdb.hgc.jp/htp/download/A_thaliana_hc.tar.gz',
-				'common' => 'arabidopsis',
-				'name' => 'A. thaliana', 
-				'nodes' => 3748,
-				'edges' => 7334, 
-				'average_k' => 3.914, 
-				'clustering' => 0.257,
-				'modularity' => 0.838, 
-				'component' => 197,
-				'diameter' => 16,
-				'average_l' => 5.22
-			)
-		);
-		return $summary[$org . '_' . $dataset];
+	public function get_summary($org, $ss_or_hc) {
+		$db = $this->make_db_connection();
+		
+		/* Fetch and return organism summary from database */
+		$dataset = $org . '_' . $ss_or_hc;
+		$stmt = $db->stmt_init();
+		$stmt->prepare('SELECT * FROM summary WHERE dataset = ?');
+		$stmt->bind_param('s', $dataset);
+		$stmt->execute();
+		$summary = $stmt->get_result()->fetch_array();
+		$stmt->close();
+		
+		$db->close();
+		return $summary;
 	}
 
 }

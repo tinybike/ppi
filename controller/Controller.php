@@ -15,9 +15,11 @@ class Controller {
 		
 		// If the user is searching for a protein, send query to database
 		if (isset($_POST['lookup'])) {
-			$protein_matches = $this->model->protein_search($org, $_POST['lookup']);
+			$protein_matches = $this->model->
+				protein_search($org, $_POST['lookup']);
 			if (count($protein_matches) == 1) {
-				list($protein, $ss_links, $hc_links) = $this->model->get_protein_info($org, $protein_matches[0]['entry']);
+				list($protein, $ss_links, $hc_links) = $this->model->
+					get_protein_info($org, $protein_matches[0]['entry']);
 				include 'view/protein_detail.php';
 			}
 			else {
@@ -27,7 +29,8 @@ class Controller {
 		
 		// If protein is specified, then return detailed information
 		elseif (isset($_POST['protein_id'])) {
-			list($protein, $ss_links, $hc_links) = $this->model->get_protein_info($org, $_POST['protein_id']);
+			list($protein, $ss_links, $hc_links) = $this->model->
+				get_protein_info($org, $_POST['protein_id']);
 			include 'view/protein_detail.php';
 		}
 		
