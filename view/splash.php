@@ -218,22 +218,6 @@ else {
 	</div>
 	";
 	?>
-	<?php
-	/*if (isset($_GET['ppi'])) {
-		echo '
-		<script>
-		$("#intro").hide();
-		</script>
-		';
-	}
-	else {
-		echo '
-		<script>
-		$("#summary").hide();
-		</script>
-		';
-	}*/
-	?>
 	<div id="searchbar">
 		<form method="post" class="form" id="protein_lookup">
 			<table>
