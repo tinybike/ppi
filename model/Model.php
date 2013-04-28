@@ -36,6 +36,12 @@ class Model {
 	 */
 	public function protein_search($org, $lookup) {
 		$db = $this->make_db_connection();
+		
+		/* Verify org input against organism whitelist */
+		if (!$this->check_org_list($db, $org)) {
+			$db->close();
+			return NULL;
+		}
 				
 		/* Fetch and return protein matches from database */
 		$stmt = $db->stmt_init();
@@ -49,7 +55,6 @@ class Model {
 		$lookup = '%' . strtoupper($lookup) . '%';
 		$stmt->bind_param('ssss', $lookup, $lookup, $lookup, $lookup);
 		$stmt->execute();
-		
 		$protein_matches = array();
 		$result = $stmt->get_result();
 		while ($row = $result->fetch_array()) {
@@ -70,7 +75,7 @@ class Model {
 	public function get_protein_info($org, $lookup) {
 		$db = $this->make_db_connection();
 
-		/* Check organism whitelist to protect query */
+		/* Verify org input against organism whitelist */
 		if (!$this->check_org_list($db, $org)) {
 			$db->close();
 			return NULL;
