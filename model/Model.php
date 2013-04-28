@@ -60,10 +60,9 @@ class Model {
 		while ($row = $result->fetch_array()) {
 			$protein_matches[] = $row;
 		}
-
 		$stmt->close();
+		
 		$db->close();
-
 		return $protein_matches;
 	}
 	
