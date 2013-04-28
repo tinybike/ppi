@@ -1,14 +1,33 @@
 <?php
 include_once('model/Model.php');
 
+/**
+* A Controller object is created every time the user navigates to index.php.
+*/
 class Controller {
 	private $model;
 	
+	/**
+	* Controller constructor creates the Model object, which contains the
+	* methods needed to fetch information from the database.
+	*/
 	public function __construct() {
 		$this->model = new Model();
 	}
 	
+	/** 
+	* invoke() is called every time the user navigates to index.php.  Depending
+	* on which $_POST elements are set, invoke() either:
+	*
+	* 1) Loads the basic interacto.me layout page (splash.php) for the
+	* selected organism and dataset.  The organism and dataset are specified
+	* as $_GET['ppi'] and $_GET['d'], respectively.
+	*
+	* 2) Fetches detailed protein information and/or search query results from
+	* the database and sends via AJAX to the appropriate div in splash.php.
+	*/
 	public function invoke() {
+	
 		// Get organism and dataset codes, if specified
 		$org = (isset($_GET['ppi'])) ? $_GET['ppi'] : 'sce';
 		$dataset = (isset($_GET['d'])) ? $_GET['d'] : 'ss';

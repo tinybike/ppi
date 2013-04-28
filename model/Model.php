@@ -1,14 +1,17 @@
 <?php
+/**
+* The Model class contains methods for sanitizing user requests and fetching
+* information from the MySQL database.
+*/
 class Model {
 
 	/**
-	 * Connect to MySQL database using mysqli, with parameters specified 
-	 * in dbparams.php.
-	 */
+	* Connect to interacto.me MySQL database using parameters specified in 
+	* dbparams.php.
+	*/
 	protected function make_db_connection() {	
 		include 'model/dbparams.php';
 		$db = new mysqli($db_host, $db_user, $db_pass, $db_name);
-		// Check connection
 		if ($db->connect_errno) {
 			printf("Connect failed: %s\n", $db->connect_error);
 			exit();
@@ -17,9 +20,9 @@ class Model {
 	}
 	
 	/**
-	 * Check organism three-letter code against pre-defined whitelist to guard
-	 * against injection.
-	 */
+	* Check organism three-letter code against pre-defined whitelist (to guard
+	* against SQL injection).
+	*/
 	protected function check_org_list($db, $org) {
 		$result = $db->query('SELECT * FROM org_list');
 		$org_list = array();
@@ -31,9 +34,9 @@ class Model {
 	}
 	
 	/**
-	 * Sanitize user query and search database for protein/gene name matches,
-	 * and/or UniProt/SwissProt ID matches.
-	 */
+	* Search database for protein/gene name matches and/or UniProt/SwissProt 
+	* ID matches.
+	*/
 	public function protein_search($org, $lookup) {
 		$db = $this->make_db_connection();
 		
@@ -67,10 +70,9 @@ class Model {
 	}
 	
 	/**
-	 * If the protein is specified, fetch detailed information about the
-	 * protein, and lists of its small-scale and hi-confidence interaction 
-	 * partners.
-	 */
+	* Fetch detailed information about a protein, and lists of its small-scale 
+	* and hi-confidence interaction partners.
+	*/
 	public function get_protein_info($org, $lookup) {
 		$db = $this->make_db_connection();
 
@@ -126,9 +128,9 @@ class Model {
 	}
 	
 	/**
-	 * Fetch basic statistics for the selected organism and dataset (small
-	 * scale or hi-confidence).
-	 */
+	* Fetch basic statistics for the selected organism and dataset (small
+	* scale or hi-confidence).
+	*/
 	public function get_summary($org, $ss_or_hc) {
 		$db = $this->make_db_connection();
 		

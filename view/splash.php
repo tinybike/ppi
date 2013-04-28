@@ -2,7 +2,19 @@
 <html>
 <head>
 <title>interacto.me: visualization for protein interaction networks</title>
-<?php include 'view/headers.html'; ?>
+<meta http-equiv="Content-type" content="text/html; charset=UTF-8" />
+<meta http-equiv="Content-Language" content="en-us" />
+<meta http-equiv="Content-Script-Type" content="text/javascript">
+<meta name="description" content="Build your own protein interaction network!" />
+<meta name="keywords" content="PPI,PIN,graph,protein,interaction,network,sigma,sigmajs,Gephi,layout" />
+<meta name="author" content="Jack Peterson" />
+<link href="css/ppi.css" rel="stylesheet" type="text/css" />
+<link href="http://code.jquery.com/ui/1.9.1/themes/base/jquery-ui.css" rel="stylesheet" type="text/css" />
+<link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+<link href="css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css" />
+<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+<script src="http://code.jquery.com/ui/1.9.1/jquery-ui.js"></script>
+<script src="http://code.jquery.com/jquery-migrate-1.1.1.min.js"></script>
 <script src="js/jquery.lightbox_me.js"></script>
 <script src="js/sigma.min.js"></script>
 <script src="js/sigma.parseJson.js"></script>
@@ -13,35 +25,17 @@ var showIntro = '<?php echo (!isset($_GET["ppi"])); ?>';
 
 $(document).ready(function() {
 
-	// Drop-down boxes
-	$('#login-trigger').click(function() {
-		$(this).next('#login-content').toggle();
-		$(this).toggleClass('active');							
-		if ($(this).hasClass('active')) {
-			$(this).find('span').html('&#x25B2;');
-		}
-		else {
-			$(this).find('span').html('&#x25BC;');
-		}
-	})
-	$('#how-trigger').click(function() {
-		$(this).next('#how-content').toggle();
-		$(this).toggleClass('active');							
-		if ($(this).hasClass('active')) {
-			$(this).find('span').html('&#x25B2;');
-		}
-		else {
-			$(this).find('span').html('&#x25BC;');
-		}
-	})
-
-	// Lightbox
+	/**
+	* Lightboxes (lightbox.me) for 'about' and 'intro' buttons on navigation
+	* bar.  The 'intro' lightbox is shown by default when the user first comes
+	* to interacto.me, and provides basic use instructions for the site.
+	*/
 	$('#try-1').click(function(e) {
-		$('#sign_up').lightbox_me({
+		$('#about_this_site').lightbox_me({
 			centered: true, 
 			onLoad: function() { 
-				$('#sign_up').find('input:first').focus()
-				}
+				$('#about_this_site').find('input:first').focus()
+			}
 		});
 		e.preventDefault();
 	});
@@ -49,10 +43,14 @@ $(document).ready(function() {
 		$('#intro').lightbox_me({centered: true});
 	}
 		
-	// Search query
+	/**
+	* Use jQuery post() to fetch the response to protein search queries.  The
+	* search query is sent via POST, and organism name (ppi) and dataset (d)
+	* are sent via GET.  AJAX response is sent to the search_results div.
+	*/
 	$('#protein_lookup').submit(function() {
-		$.post('index.php?ppi=' + organism + '&d=' + dataset, $(this).serialize(), 
-			function(response) {
+		$.post('index.php?ppi=' + organism + '&d=' + dataset, 
+			$(this).serialize(), function(response) {
 				$('#search_results').html(response).show();
 			}
 		);
@@ -60,6 +58,13 @@ $(document).ready(function() {
 	});	
 });
 
+/**
+* Initialize the sigma.js PPI graph, and populate it with nodes and edges
+* according to the organism and dataset the user selects.  Default is the
+* small-scale dataset from S. cerevisiae.  Graph data are stored (in JSON 
+* format) in the data/ directory.  (parseJson.js is required to load these
+* data into the graph.)
+*/
 function init() {
 	
 	var numEdges = <?php echo $summary['edges']; ?>;
@@ -82,8 +87,12 @@ function init() {
 		maxRatio: 4
 	});
  
-	// Parse a JSON encoded file to fill the graph
-	sigInst.parseJson('data/' + organism + '_' + dataset + '.json', function() { sigInst.draw(); });
+	// Parse JSON file to populate the graph
+	sigInst.parseJson('data/' + organism + '_' + dataset + '.json', 
+		function() { 
+			sigInst.draw();
+		}
+	);
 	
 	// Bind events
 	var greyColor = '#ccc';
@@ -130,8 +139,8 @@ function init() {
 		var clickNode = event.content[0];
 		sigInst.iterNodes(function(n){
 			node = n;
-			$.post('index.php?ppi=' + organism + '&d=' + dataset, {'protein_id': clickNode}, 
-				function(response) {
+			$.post('index.php?ppi=' + organism + '&d=' + dataset, 
+				{'protein_id': clickNode}, function(response) {
 					sigInst.zoomTo(node.displayX,node.displayY,12);
 					$('#search_results').html(response).show();
 				}
@@ -312,12 +321,12 @@ else {
 <div id="footer">&copy; 2012 - 2013 <a href="http://www.tinybike.net">Jack Peterson</a>.  All rights reserved.</div>
 
 <!--- Lightbox --->
-<div id="sign_up">
+<div id="about_this_site">
 	<h3 id="see_id" style="float:left">About this site</h3>
 	<div id="close_button">
-	<a href="#" onclick="$('#sign_up').trigger('close'); return false;"><img src="images/close_button.png" alt="close" width="18px" /></a>
+	<a href="#" onclick="$('#about_this_site').trigger('close'); return false;"><img src="images/close_button.png" alt="close" width="18px" /></a>
 	</div>
-	<div id="sign_up_form" style="clear:both; padding-top:10px;">
+	<div id="about_this_site_form">
 		<p>The <a href="http://dillgroup.org">Dill research group</a>, at <a href="http://www.stonybrook.edu">Stony Brook University's</a> <a href="http://www.laufercenter.org">Laufer Center</a>, has recently begun a computational study of eukaryotic protein-protein interaction (PPI) network evolution.  We published our basic model layout in <i>PLoS ONE</i>, in 2012:</p>
 		<p>J. Peterson, S. Presse, K. Peterson, and K. Dill. <a href="http://www.plosone.org/article/info%3Adoi%2F10.1371%2Fjournal.pone.0039052">Simulated evolution of protein-protein interaction networks with realistic topology</a>. <i>PLoS ONE</i> 7(6): e39052, 2012.</p>
 		<p>The Matlab scripts we used to carry out our simulations are freely available on <a href="https://github.com/tensorjack/DUNE">GitHub</a>.  (In addition, you will need to install the <a href="http://www.mathworks.com/matlabcentral/fileexchange/10922">MatlabBGL package</a> and the <a href="https://sites.google.com/a/brain-connectivity-toolbox.net/bct/Home/functions/modularity_louvain_und.m?attredirects=0">Louvain modularity script</a>.)  In our model, protein networks evolve by two known biological mechanisms: (1) a gene can duplicate, putting one copy under new selective pressures that allow it to establish new relationships to other proteins in the cell, and (2) a protein undergoes a mutation that causes it to develop new binding or new functional relationships with existing proteins. In addition, we allow for the possibility that once a mutated protein develops a new relationship with another protein (called the target), the mutant protein can also more readily establish relationships with other proteins in the target’s neighborhood.</p>
