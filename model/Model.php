@@ -1,7 +1,8 @@
 <?php
 /**
 * The Model class contains methods for sanitizing user requests and fetching
-* information from the MySQL database.
+* information from the MySQL database, which is then passed back to the
+* Controller.
 */
 class Model {
 
