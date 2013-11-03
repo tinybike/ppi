@@ -240,6 +240,14 @@ else {
 		</form>
 	</div>
 	<div id="search_results"></div>
+	<script>
+	$(window).load(function () {
+		$('#search_results').css('right', $('#rightbar').width() + 20);
+	});
+	$(window).resize(function () {
+		$('#search_results').css('right', $('#rightbar').width() + 20);
+	});
+	</script>
 	<div id="infobox"></div>
 	<div id="rightbar">
 		<table>

@@ -54,6 +54,7 @@ a {
 }
 
 .text_input {
+	width: 85% !important;
 	margin-top: 10px;
     padding: 3px;
     border: 1px solid #ccc;
@@ -359,7 +360,8 @@ input.medium_button {
 
 /* Rightbar */
 #rightbar {
-	width: 15%;
+	width: 250px;
+	max-width: 15%;
 	float: right;
 	clear: right;
 	padding-right: 10px;
@@ -384,7 +386,8 @@ input.medium_button {
 
 /* Search */
 #searchbar {
-	width: 15%;
+	width: 250px;
+	max-width: 15%;
 	float: right;
 	clear: right;
 	padding-right: 10px;
@@ -514,6 +517,7 @@ input.medium_button {
 
 #results_header {
 	float: left;
+	max-width: 95%;
 }
 #close_button {
 	float: right;
