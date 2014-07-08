@@ -1,6 +1,6 @@
 ## interacto.me
 
-Protein-protein interaction network links, visualization, modeling, and other fun stuff.  This site is meant to accompany our lab's simulated evolution research.  Our Matlab-based simulations are available at:
+http://interacto.me -- protein-protein interaction network links, visualization, modeling, and other fun stuff.  This site is meant to accompany our lab's simulated evolution research.  Our Matlab-based simulations are available at:
 
 https://github.com/tensorjack/DUNE
 
